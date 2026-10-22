@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAP Clinic - Katalog Treatment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center cursor-pointer" onclick="location.href='index.html'">
+                    <span class="text-2xl font-black tracking-wider text-slate-800">ZAP<span class="text-pink-500">.</span></span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link py-2 text-sm font-medium text-slate-600">Beranda</a>
+                    <a href="katalog.html" class="nav-link py-2 text-sm font-medium text-pink-500 font-bold border-b-2 border-pink-500">Katalog Treatment</a>
+                    <a href="dokter.html" class="nav-link py-2 text-sm font-medium text-slate-600">Dokter & Beautician</a>
+                    <a href="jadwal.html" class="nav-link py-2 text-sm font-medium text-slate-600">Reservasi Online</a>
+                    <a href="riwayat.html" class="nav-link py-2 text-sm font-medium text-slate-600">Riwayat</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Katalog -->
+    <main class="flex-grow py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Katalog Treatment & Perawatan</h1>
+                <p class="text-slate-600 mt-2">Pilih perawatan spesialis sesuai kebutuhan kulit dan tubuh Anda.</p>
+            </div>
+            <!-- Category Filters -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="filterCatalog('all')" class="cat-btn active border px-5 py-2.5 rounded-full text-sm font-semibold bg-pink-500 text-white" data-cat="all">Semua</button>
+                <button onclick="filterCatalog('hair')" class="cat-btn border px-5 py-2.5 rounded-full text-sm font-semibold bg-white text-slate-700" data-cat="hair">Hair Removal</button>
+                <button onclick="filterCatalog('face')" class="cat-btn border px-5 py-2.5 rounded-full text-sm font-semibold bg-white text-slate-700" data-cat="face">Face Care & Laser</button>
+                <button onclick="filterCatalog('infusion')" class="cat-btn border px-5 py-2.5 rounded-full text-sm font-semibold bg-white text-slate-700" data-cat="infusion">Infusion</button>
+            </div>
+            <div id="catalog-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-6 text-center text-xs">
+        <p>&copy; 2026 ZAP Clinic. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => renderCatalog('all'));
+    </script>
+</body>
+</html>
