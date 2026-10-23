@@ -38,16 +38,16 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .glass {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
         .dark .glass {
-            background: rgba(17, 24, 39, 0.85);
+            background: rgba(17, 24, 39, 0.88);
         }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
@@ -56,22 +56,22 @@
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300 custom-scrollbar">
 
     <!-- Notification Toast -->
-    <div id="toast" class="fixed top-20 right-4 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-5 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 max-w-md border border-slate-700/30">
-        <div id="toastIcon" class="text-brand-500 dark:text-brand-600"><i class="fas fa-info-circle text-lg"></i></div>
-        <div id="toastMessage" class="text-sm font-medium">Notifikasi</div>
+    <div id="toast" class="fixed top-20 right-4 left-4 sm:left-auto z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 sm:max-w-md border border-slate-700/30">
+        <div id="toastIcon" class="text-brand-500 dark:text-brand-600 flex-shrink-0"><i class="fas fa-info-circle text-lg"></i></div>
+        <div id="toastMessage" class="text-xs sm:text-sm font-medium">Notifikasi</div>
     </div>
 
     <!-- Header Navigation -->
     <header class="sticky top-0 z-40 glass border-b border-slate-200 dark:border-slate-800 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             <!-- Logo -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('beranda')">
-                <div class="w-11 h-11 bg-gradient-to-tr from-brand-600 to-emerald-400 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-brand-500/20">
+            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="navigateTo('beranda')">
+                <div class="w-9 h-9 sm:w-11 sm:h-11 bg-gradient-to-tr from-brand-600 to-emerald-400 rounded-xl sm:rounded-2xl flex items-center justify-center text-white font-extrabold text-xl sm:text-2xl shadow-lg shadow-brand-500/20">
                     Z
                 </div>
                 <div>
-                    <span class="text-2xl font-black tracking-tight bg-gradient-to-r from-brand-600 to-teal-500 bg-clip-text text-transparent">KLINIK ZIP</span>
-                    <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 -mt-1">Aesthetic & Laser</span>
+                    <span class="text-lg sm:text-2xl font-black tracking-tight bg-gradient-to-r from-brand-600 to-teal-500 bg-clip-text text-transparent">KLINIK ZIP</span>
+                    <span class="block text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 -mt-1">Aesthetic & Laser</span>
                 </div>
             </div>
 
@@ -84,17 +84,17 @@
             </nav>
 
             <!-- Actions Right -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 sm:space-x-4">
                 <!-- Theme Toggle -->
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Ubah Mode Tampilan">
-                    <i class="fas fa-moon dark:hidden"></i>
-                    <i class="fas fa-sun hidden dark:block text-amber-400"></i>
+                <button onclick="toggleDarkMode()" class="p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Ubah Mode Tampilan">
+                    <i class="fas fa-moon dark:hidden text-sm"></i>
+                    <i class="fas fa-sun hidden dark:block text-amber-400 text-sm"></i>
                 </button>
 
                 <!-- Cart Icon -->
-                <button onclick="requireAuthAndNavigate('keranjang')" class="relative p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                    <i class="fas fa-shopping-bag text-lg"></i>
-                    <span id="cartCountBadge" class="hidden absolute -top-1.5 -right-1.5 bg-brand-600 text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">0</span>
+                <button onclick="requireAuthAndNavigate('keranjang')" class="relative p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <i class="fas fa-shopping-bag text-base sm:text-lg"></i>
+                    <span id="cartCountBadge" class="hidden absolute -top-1.5 -right-1.5 bg-brand-600 text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">0</span>
                 </button>
 
                 <!-- Dynamic Auth Section -->
@@ -111,30 +111,30 @@
     </main>
 
     <!-- WhatsApp Floating CTA -->
-    <a href="https://wa.me/6281234567890?text=Halo%20Klinik%20ZIP,%20saya%20ingin%20konsultasi%20mengenai%20treatment" target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl flex items-center space-x-3 transition-all duration-300 hover:scale-105 group">
-        <i class="fab fa-whatsapp text-2xl"></i>
-        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 text-sm font-bold">Tanya CS Zip</span>
+    <a href="https://wa.me/6281234567890?text=Halo%20Klinik%20ZIP,%20saya%20ingin%20konsultasi%20mengenai%20treatment" target="_blank" class="fixed bottom-5 right-5 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl flex items-center space-x-2.5 transition-all duration-300 hover:scale-105 group">
+        <i class="fab fa-whatsapp text-xl sm:text-2xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 text-xs sm:text-sm font-bold">Tanya CS Zip</span>
     </a>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-12 pb-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div class="space-y-4">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white font-black text-xl">Z</div>
                     <span class="text-xl font-bold text-white tracking-tight">KLINIK ZIP</span>
                 </div>
-                <p class="text-sm leading-relaxed text-slate-400">Pionir perawatan kecantikan kulit berbasis teknologi laser dan perawatan medis profesional terpercaya di Indonesia.</p>
-                <div class="flex space-x-4 pt-2">
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
+                <p class="text-xs sm:text-sm leading-relaxed text-slate-400">Pionir perawatan kecantikan kulit berbasis teknologi laser dan perawatan medis profesional terpercaya di Indonesia.</p>
+                <div class="flex space-x-3 pt-1">
+                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-tiktok text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-youtube text-xs"></i></a>
                 </div>
             </div>
 
             <div>
-                <h4 class="text-white font-semibold mb-4">Perawatan Populer</h4>
-                <ul class="space-y-2.5 text-sm">
+                <h4 class="text-white font-semibold text-sm mb-3">Perawatan Populer</h4>
+                <ul class="space-y-2 text-xs sm:text-sm">
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Photo Facial Glow</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Underarm Super Hair Removal</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">IPL Rejuvenation Therapy</a></li>
@@ -143,8 +143,8 @@
             </div>
 
             <div>
-                <h4 class="text-white font-semibold mb-4">Layanan Pelanggan</h4>
-                <ul class="space-y-2.5 text-sm">
+                <h4 class="text-white font-semibold text-sm mb-3">Layanan Pelanggan</h4>
+                <ul class="space-y-2 text-xs sm:text-sm">
                     <li><a href="#" class="hover:text-brand-400 transition-colors">Syarat & Ketentuan</a></li>
                     <li><a href="#" class="hover:text-brand-400 transition-colors">Kebijakan Privasi</a></li>
                     <li><a href="#" class="hover:text-brand-400 transition-colors">Karir Medis</a></li>
@@ -153,22 +153,20 @@
             </div>
 
             <div>
-                <h4 class="text-white font-semibold mb-4">Jam Operasional Klinik</h4>
-                <p class="text-sm text-slate-400 mb-2">Senin - Minggu: 09.00 - 20.00 WIB</p>
-                <p class="text-sm text-slate-400 mb-4">Layanan Konsultasi Online: 24/7 via WhatsApp</p>
-                <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-xs">
-                    <span class="text-emerald-400 font-semibold">✓ Dokter Spesialis Dermatology Sertifikasi Resmi</span>
+                <h4 class="text-white font-semibold text-sm mb-3">Jam Operasional</h4>
+                <p class="text-xs sm:text-sm text-slate-400 mb-2">Senin - Minggu: 09.00 - 20.00 WIB</p>
+                <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-[11px]">
+                    <span class="text-emerald-400 font-semibold">✓ Dokter Spesialis Dermatology Resmi</span>
                 </div>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-slate-800 text-center text-[11px] text-slate-500">
             &copy; 2026 Klinik ZIP Aesthetic & Laser Dermatology. All rights reserved.
         </div>
     </footer>
 
     <!-- App Logic & State Script -->
     <script>
-        // High Quality Unsplash Images with Safe Fallbacks
         const IMAGES = {
             hero: [
                 "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1200&q=80",
@@ -184,15 +182,9 @@
                 bodySlim: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80"
             },
             clinic: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80",
-            doctors: [
-                "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
-                "https://images.unsplash.com/photo-1594824813566-7885a3977336?auto=format&fit=crop&w=400&q=80"
-            ],
             fallback: "https://placehold.co/600x400/059669/ffffff?text=Klinik+ZIP+Treatment"
         };
 
-        // Treatment Data Store
         const TREATMENTS_DATA = [
             {
                 id: 1,
@@ -285,12 +277,11 @@
             }
         ];
 
-        // Global Application State
         let state = {
-            currentStage: 'beranda', // beranda, login, katalog, detail, keranjang, bookingForm, bookingSukses, riwayat
+            currentStage: 'beranda',
             isLoggedIn: false,
             userProfile: null,
-            pendingAction: null, // Stores intended route or function call after mandatory login
+            pendingAction: null,
             cart: [],
             selectedTreatment: TREATMENTS_DATA[0],
             bookingDetails: {
@@ -306,7 +297,7 @@
                 voucherCode: '',
                 discount: 0
             },
-            historyTab: 'semua', // semua, berlangsung, selesai, dibatalkan
+            historyTab: 'semua',
             bookingHistory: [
                 {
                     id: "ZIP-89210",
@@ -329,17 +320,6 @@
                     total: 2049000,
                     status: "Berlangsung",
                     itemsCount: 2
-                },
-                {
-                    id: "ZIP-61023",
-                    tanggal: "2026-09-02",
-                    jam: "16:00",
-                    cabang: "ZAP Clinic Pattimura Medan",
-                    dokter: "dr. Clara Devina, Dip.AAAM",
-                    treatments: ["Acne Clear Advanced Laser"],
-                    total: 599000,
-                    status: "Dibatalkan",
-                    itemsCount: 1
                 }
             ],
             heroIndex: 0,
@@ -347,11 +327,9 @@
             searchQuery: ''
         };
 
-        // Initialization
         window.onload = function() {
             renderHeaderAuth();
             renderApp();
-            // Hero Slider Timer
             setInterval(() => {
                 if (state.currentStage === 'beranda') {
                     state.heroIndex = (state.heroIndex + 1) % IMAGES.hero.length;
@@ -361,12 +339,10 @@
             }, 5000);
         };
 
-        // Dark Mode Controller
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
         }
 
-        // Notification Toast Handler
         function showToast(msg, type = 'info') {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMessage');
@@ -387,13 +363,12 @@
             }, 3800);
         }
 
-        // MANDATORY AUTH GUARD
-        function requireAuth(callbackAction, redirectStage = 'login') {
+        function requireAuth(callbackAction) {
             if (state.isLoggedIn) {
                 callbackAction();
             } else {
                 state.pendingAction = callbackAction;
-                showToast("Silakan login/daftar terlebih dahulu untuk melanjutkan booking atau akses keranjang.", "auth");
+                showToast("Silakan login/daftar terlebih dahulu.", "auth");
                 navigateTo('login');
             }
         }
@@ -407,7 +382,6 @@
             });
         }
 
-        // Router & Stage Switcher
         function navigateTo(stage) {
             state.currentStage = stage;
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -428,35 +402,33 @@
             }
         }
 
-        // Header Render Helper
         function renderHeaderAuth() {
             const container = document.getElementById('authHeaderContainer');
             if (!container) return;
 
             if (state.isLoggedIn) {
                 container.innerHTML = `
-                    <div class="flex items-center space-x-3 bg-slate-100 dark:bg-slate-800 p-1.5 pl-3 rounded-2xl border border-slate-200 dark:border-slate-700">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shadow-md">
+                    <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 p-1 pl-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center space-x-1.5">
+                            <div class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-[10px] shadow">
                                 ${state.userProfile.name.charAt(0).toUpperCase()}
                             </div>
                             <span class="text-xs font-bold hidden sm:inline text-slate-700 dark:text-slate-200">${state.userProfile.name.split(' ')[0]}</span>
                         </div>
-                        <button onclick="handleLogout()" class="text-xs font-semibold px-3 py-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-xl hover:bg-rose-500 hover:text-white transition-colors" title="Keluar">
+                        <button onclick="handleLogout()" class="text-xs px-2 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-500 hover:text-white transition-colors" title="Keluar">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
                     </div>
                 `;
             } else {
                 container.innerHTML = `
-                    <button onclick="navigateTo('login')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold tracking-wide shadow-lg shadow-brand-600/30 transition-all hover:scale-[1.02]">
-                        Masuk / Daftar
+                    <button onclick="navigateTo('login')" class="px-3.5 sm:px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-600/30 transition-all">
+                        Masuk
                     </button>
                 `;
             }
         }
 
-        // Authentication Handlers
         function handleLoginSubmit(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail')?.value || "pasien@zip.id";
@@ -464,20 +436,13 @@
             const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
             state.isLoggedIn = true;
-            state.userProfile = {
-                name: formattedName,
-                email: email,
-                phone: "08123456789"
-            };
-
-            // Sync booking patient info with logged in user profile
+            state.userProfile = { name: formattedName, email: email, phone: "08123456789" };
             state.bookingDetails.nama = state.userProfile.name;
             state.bookingDetails.phone = state.userProfile.phone;
 
             renderHeaderAuth();
-            showToast(`Selamat datang kembali, ${state.userProfile.name}!`, "success");
+            showToast(`Selamat datang, ${state.userProfile.name}!`, "success");
 
-            // Execute saved action if exists
             if (state.pendingAction) {
                 const action = state.pendingAction;
                 state.pendingAction = null;
@@ -491,24 +456,17 @@
             state.isLoggedIn = false;
             state.userProfile = null;
             state.cart = [];
-            state.bookingDetails.nama = '';
-            state.bookingDetails.phone = '';
             renderHeaderAuth();
-            showToast("Anda telah keluar dari akun.", "info");
+            showToast("Anda telah keluar akun.", "info");
             navigateTo('beranda');
         }
 
-        // Cart Actions
         function addToCart(treatment) {
             requireAuth(() => {
                 const existing = state.cart.find(item => item.id === treatment.id);
-                if (existing) {
-                    existing.qty += 1;
-                } else {
-                    state.cart.push({ ...treatment, qty: 1 });
-                }
+                if (existing) { existing.qty += 1; } else { state.cart.push({ ...treatment, qty: 1 }); }
                 updateCartBadge();
-                showToast(`${treatment.name} berhasil ditambahkan ke keranjang!`, "success");
+                showToast(`${treatment.name} masuk keranjang!`, "success");
             });
         }
 
@@ -516,9 +474,7 @@
             const item = state.cart.find(i => i.id === id);
             if (item) {
                 item.qty += delta;
-                if (item.qty <= 0) {
-                    state.cart = state.cart.filter(i => i.id !== id);
-                }
+                if (item.qty <= 0) { state.cart = state.cart.filter(i => i.id !== id); }
                 updateCartBadge();
                 renderApp();
             }
@@ -529,87 +485,62 @@
             if (code === 'ZAPNEW10') {
                 state.bookingDetails.discount = 0.10;
                 state.bookingDetails.voucherCode = code;
-                showToast("Voucher Diskon 10% Berhasil Dipasang!", "success");
+                showToast("Voucher Diskon 10% Dipasang!", "success");
             } else if (code === 'GLOWFEST20') {
                 state.bookingDetails.discount = 0.20;
                 state.bookingDetails.voucherCode = code;
-                showToast("Voucher Diskon Special 20% Berhasil Dipasang!", "success");
-            } else if (code === 'FREEKONSUL') {
-                state.bookingDetails.discount = 50000; // Flat
-                state.bookingDetails.voucherCode = code;
-                showToast("Potongan Rp 50.000 Berhasil Dipasang!", "success");
+                showToast("Voucher Diskon 20% Dipasang!", "success");
             } else {
-                showToast("Kode voucher tidak valid atau kadaluarsa", "warning");
+                showToast("Kode voucher tidak valid", "warning");
             }
             renderApp();
         }
 
-        // Formatting Helpers
         function formatRupiah(num) {
             return "Rp " + new Intl.NumberFormat('id-ID').format(num);
         }
 
-        // MAIN COMPONENT RENDERER
         function renderApp() {
             const container = document.getElementById('appContainer');
             if (!container) return;
 
             switch(state.currentStage) {
-                case 'beranda':
-                    container.innerHTML = renderStageBeranda();
-                    break;
-                case 'login':
-                    container.innerHTML = renderStageLogin();
-                    break;
-                case 'katalog':
-                    container.innerHTML = renderStageKatalog();
-                    break;
-                case 'detail':
-                    container.innerHTML = renderStageDetail();
-                    break;
-                case 'keranjang':
-                    container.innerHTML = renderStageKeranjang();
-                    break;
-                case 'bookingForm':
-                    container.innerHTML = renderStageBookingForm();
-                    break;
-                case 'bookingSukses':
-                    container.innerHTML = renderStageBookingSukses();
-                    break;
-                case 'riwayat':
-                    container.innerHTML = renderStageRiwayat();
-                    break;
-                default:
-                    container.innerHTML = renderStageBeranda();
+                case 'beranda': container.innerHTML = renderStageBeranda(); break;
+                case 'login': container.innerHTML = renderStageLogin(); break;
+                case 'katalog': container.innerHTML = renderStageKatalog(); break;
+                case 'detail': container.innerHTML = renderStageDetail(); break;
+                case 'keranjang': container.innerHTML = renderStageKeranjang(); break;
+                case 'bookingForm': container.innerHTML = renderStageBookingForm(); break;
+                case 'bookingSukses': container.innerHTML = renderStageBookingSukses(); break;
+                case 'riwayat': container.innerHTML = renderStageRiwayat(); break;
+                default: container.innerHTML = renderStageBeranda();
             }
         }
 
-        // STAGE 1: BERANDA
         function renderStageBeranda() {
             return `
-                <!-- Hero Section Carousel -->
-                <div class="relative bg-slate-900 text-white overflow-hidden min-h-[520px] flex items-center">
-                    <img id="heroSliderImage" src="${IMAGES.hero[state.heroIndex]}" onerror="this.src='${IMAGES.fallback}'" class="absolute inset-0 w-full h-full object-cover opacity-40 transition-all duration-1000 transform scale-105" alt="Banner Klinik Zip">
+                <div class="relative bg-slate-900 text-white overflow-hidden min-h-[440px] sm:min-h-[500px] flex items-center">
+                    <img id="heroSliderImage" src="${IMAGES.hero[state.heroIndex]}" onerror="this.src='${IMAGES.fallback}'" class="absolute inset-0 w-full h-full object-cover opacity-40 transition-all duration-1000 transform scale-105" alt="Banner">
                     <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-transparent"></div>
                     
-                    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10 w-full">
-                        <div class="max-w-2xl space-y-6">
-                            <span class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs font-semibold backdrop-blur-md">
+                    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 z-10 w-full">
+                        <div class="max-w-xl space-y-4 sm:space-y-6">
+                            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-brand-500/25 text-brand-300 border border-brand-500/30 text-[11px] sm:text-xs font-semibold backdrop-blur-md">
                                 <i class="fas fa-sparkles text-gold-400"></i>
-                                <span>Pilihan Utama Perawatan Kulit Impian</span>
+                                <span>Perawatan Kulit Impian Profesional</span>
                             </span>
-                            <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight tracking-tight">
+                            <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight tracking-tight">
                                 Kulit Glowing Sehat Tanpa Downtime.
                             </h1>
-                            <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
-                                Dapatkan perawatan laser dan estetik standar internasional yang ditangani langsung oleh Dokter Spesialis Kulit berpengalaman.
+                            <p class="text-slate-300 text-xs sm:text-base leading-relaxed">
+                                Dapatkan perawatan laser dan estetik standar internasional langsung dari Dokter Spesialis Kulit berpengalaman.
                             </p>
-                            <div class="flex flex-wrap gap-4 pt-4">
-                                <button onclick="navigateTo('katalog')" class="px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-2xl shadow-xl shadow-brand-600/30 transition-all hover:scale-105 flex items-center space-x-3">
-                                    <span>Lihat Semua Perawatan</span>
-                                    <i class="fas fa-arrow-right text-xs"></i>
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <button onclick="navigateTo('katalog')" class="px-6 py-3.5 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 text-xs sm:text-sm transition-all flex items-center space-x-2">
+                                    <span>Lihat Katalog</span>
+                                    <i class="fas fa-arrow-right text-[10px]"></i>
                                 </button>
-                                <button onclick="requireAuthAndNavigate('bookingForm')" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold rounded-2xl backdrop-blur-md transition-all hover:scale-105">
+                                <button onclick="requireAuthAndNavigate('bookingForm')" class="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold rounded-xl text-xs sm:text-sm backdrop-blur-md transition-all">
                                     Booking Sekarang
                                 </button>
                             </div>
@@ -617,70 +548,70 @@
                     </div>
                 </div>
 
-                <!-- Promo Banner Highlight -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
-                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 sm:p-8 text-white shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6 border border-emerald-400/20">
-                        <div class="flex items-center space-x-5">
-                            <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 backdrop-blur-md">
+                <!-- Promo Banner -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-emerald-400/20">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-xl flex-shrink-0 backdrop-blur-md">
                                 <i class="fas fa-ticket-alt text-amber-300"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-bold">Voucher Promo Diskon 10% Member Baru</h3>
-                                <p class="text-xs text-emerald-100 mt-1">Gunakan kode voucher <span class="font-mono font-bold bg-white/20 px-2 py-0.5 rounded text-amber-300">ZAPNEW10</span> pada halaman checkout.</p>
+                                <h3 class="text-sm sm:text-base font-bold">Voucher Diskon 10% Member Baru</h3>
+                                <p class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">Gunakan kode <span class="font-mono font-bold bg-white/20 px-1.5 py-0.5 rounded text-amber-300">ZAPNEW10</span> saat checkout.</p>
                             </div>
                         </div>
-                        <button onclick="navigateTo('katalog')" class="px-6 py-3 bg-white text-brand-800 font-bold rounded-xl hover:bg-emerald-50 transition-colors text-sm whitespace-nowrap shadow-md">
-                            Gunakan Promo
+                        <button onclick="navigateTo('katalog')" class="w-full sm:w-auto px-5 py-2.5 bg-white text-brand-800 font-bold rounded-xl hover:bg-emerald-50 transition-colors text-xs shadow">
+                            Pakai Promo
                         </button>
                     </div>
                 </div>
 
-                <!-- Feature Treatments Section -->
-                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <!-- Feature Treatments -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-2">
                         <div>
-                            <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Paling Populer</span>
-                            <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Perawatan Favorit Pasien</h2>
+                            <span class="text-brand-600 dark:text-brand-400 font-bold text-[11px] sm:text-xs uppercase tracking-widest">Paling Populer</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Perawatan Favorit Pasien</h2>
                         </div>
-                        <button onclick="navigateTo('katalog')" class="text-brand-600 dark:text-brand-400 font-bold text-sm hover:underline mt-4 md:mt-0 flex items-center space-x-2">
-                            <span>Jelajahi Lebih Banyak</span>
-                            <i class="fas fa-chevron-right text-xs"></i>
+                        <button onclick="navigateTo('katalog')" class="text-brand-600 dark:text-brand-400 font-bold text-xs sm:text-sm hover:underline flex items-center space-x-1">
+                            <span>Semua Treatment</span>
+                            <i class="fas fa-chevron-right text-[10px]"></i>
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         ${TREATMENTS_DATA.slice(0, 3).map(item => `
-                            <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group">
-                                <div class="relative overflow-hidden h-56">
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-md hover:shadow-xl transition-all flex flex-col group">
+                                <div class="relative overflow-hidden h-48 sm:h-52">
                                     <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${item.name}">
-                                    ${item.badge ? `<span class="absolute top-4 left-4 bg-brand-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-widest shadow-md">${item.badge}</span>` : ''}
-                                    <span class="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center space-x-1">
+                                    ${item.badge ? `<span class="absolute top-3 left-3 bg-brand-600 text-white font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow">${item.badge}</span>` : ''}
+                                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg flex items-center space-x-1">
                                         <i class="fas fa-clock text-amber-400 text-[10px]"></i>
                                         <span>${item.duration}</span>
                                     </span>
                                 </div>
-                                <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="p-5 sm:p-6 flex-grow flex flex-col justify-between space-y-4">
                                     <div>
-                                        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-2">
+                                        <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1.5">
                                             <span>${item.category}</span>
                                             <div class="flex items-center text-amber-400 font-bold">
-                                                <i class="fas fa-star text-xs mr-1"></i>
+                                                <i class="fas fa-star text-[10px] mr-1"></i>
                                                 <span>${item.rating} (${item.reviews})</span>
                                             </div>
                                         </div>
-                                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition-colors">${item.name}</h3>
-                                        <p class="text-slate-600 dark:text-slate-300 text-xs line-clamp-2 mt-2 leading-relaxed">${item.description}</p>
+                                        <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 transition-colors">${item.name}</h3>
+                                        <p class="text-slate-600 dark:text-slate-300 text-xs line-clamp-2 mt-1.5 leading-relaxed">${item.description}</p>
                                     </div>
-                                    <div class="pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
                                         <div>
-                                            <span class="text-xs text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
-                                            <span class="text-lg font-extrabold text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
+                                            <span class="text-[10px] text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
+                                            <span class="text-sm sm:text-base font-extrabold text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
                                         </div>
                                         <div class="flex space-x-2">
-                                            <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-3 bg-slate-100 dark:bg-slate-700 hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-slate-600 rounded-xl transition-colors" title="Tambah ke Keranjang">
-                                                <i class="fas fa-cart-plus"></i>
+                                            <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-50 hover:text-brand-600 rounded-xl transition-colors" title="Tambah">
+                                                <i class="fas fa-cart-plus text-xs"></i>
                                             </button>
-                                            <button onclick="requireAuthAndNavigate('detail', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs shadow-md transition-colors">
+                                            <button onclick="requireAuthAndNavigate('detail', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs shadow">
                                                 Detail
                                             </button>
                                         </div>
@@ -691,109 +622,61 @@
                     </div>
                 </section>
 
-                <!-- Clinic & Medical Team Showcase -->
-                <section id="lokasi" class="bg-slate-100 dark:bg-slate-800/50 py-20 border-y border-slate-200 dark:border-slate-800">
+                <!-- Location & Facilities Section -->
+                <section id="lokasi" class="bg-slate-100 dark:bg-slate-800/50 py-14 sm:py-20 border-y border-slate-200 dark:border-slate-800">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                            <div class="space-y-6">
-                                <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Klinik Standar Internasional</span>
-                                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Fasilitas Modern & Tim Dokter Spesialis</h2>
-                                <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                                    Klinik ZIP menghadirkan suasana ruangan yang steril, mewah, serta didukung oleh peralatan medis berbasis laser teruji secara klinis dari Eropa & Amerika Serikat.
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center mb-12 sm:mb-16">
+                            <div class="space-y-4 sm:space-y-6">
+                                <span class="text-brand-600 dark:text-brand-400 font-bold text-[11px] sm:text-xs uppercase tracking-widest">Klinik Standar Internasional</span>
+                                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Fasilitas Modern & Dokter Spesialis</h2>
+                                <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-xs sm:text-base">
+                                    Klinik ZIP menghadirkan suasana ruangan steril, mewah, serta peralatan laser medis berstandar tinggi dari Eropa & Amerika.
                                 </p>
-                                <div class="grid grid-cols-2 gap-4 pt-2">
-                                    <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                        <div class="text-2xl font-black text-brand-600 dark:text-brand-400">100%</div>
-                                        <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Dokter Spesialis Certified</div>
+                                <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
+                                    <div class="p-3.5 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                                        <div class="text-xl sm:text-2xl font-black text-brand-600">100%</div>
+                                        <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Dokter Certified</div>
                                     </div>
-                                    <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                        <div class="text-2xl font-black text-brand-600 dark:text-brand-400">50.000+</div>
-                                        <div class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-1">Pasien Puas & Glowing</div>
+                                    <div class="p-3.5 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                                        <div class="text-xl sm:text-2xl font-black text-brand-600">50.000+</div>
+                                        <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Pasien Puas</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="relative">
-                                <img src="${IMAGES.clinic}" onerror="this.src='${IMAGES.fallback}'" class="rounded-3xl shadow-2xl w-full h-[400px] object-cover border-4 border-white dark:border-slate-700" alt="Interior Klinik ZIP">
-                                <div class="absolute -bottom-6 -left-6 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3">
-                                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl">
-                                        <i class="fas fa-shield-alt"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-slate-900 dark:text-white">Steril & Aman</div>
-                                        <div class="text-xs text-slate-500">Protokol Kesehatan Ketat</div>
-                                    </div>
-                                </div>
+                                <img src="${IMAGES.clinic}" onerror="this.src='${IMAGES.fallback}'" class="rounded-2xl sm:rounded-3xl shadow-xl w-full h-[280px] sm:h-[360px] object-cover border-4 border-white dark:border-slate-700" alt="Interior">
                             </div>
                         </div>
 
-                        <!-- Daftar Outlet / Cabang -->
-                        <div class="pt-8 border-t border-slate-200 dark:border-slate-700">
-                            <div class="text-center max-w-2xl mx-auto mb-10">
-                                <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Jaringan Outlet</span>
-                                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Lokasi Outlet Cabang ZAP Clinic</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Temukan cabang Klinik terdekat di kota Anda untuk kemudahan perawatan.</p>
+                        <!-- Branches Outlet -->
+                        <div class="pt-6 border-t border-slate-200 dark:border-slate-700">
+                            <div class="text-center max-w-xl mx-auto mb-8">
+                                <span class="text-brand-600 font-bold text-[11px] uppercase tracking-widest">Jaringan Outlet</span>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Cabang ZAP Clinic</h3>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase">Medan</span>
-                                            <span class="text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-0.5 rounded-full">Buka</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                                ${[
+                                    {city: 'Medan', name: 'ZAP Clinic - Deli Park Medan', addr: 'DeliPark Mall LGM-35A, Jl. Putri Hijau', time: '10.00 - 20.00'},
+                                    {city: 'Medan', name: 'ZAP Clinic Sun Plaza Medan', addr: 'Sun Plaza Lt. 1 Unit C15-16', time: '10.00 - 21.00'},
+                                    {city: 'Medan', name: 'ZAP Clinic Pattimura Medan', addr: 'Jl. Kapten Patimura No.137', time: '09.00 - 20.00'},
+                                    {city: 'Jakarta', name: 'ZAP Clinic Kebayoran Baru', addr: 'Jl. Wolter Monginsidi No.14', time: '09.00 - 20.00'}
+                                ].map(b => `
+                                    <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-[10px] font-bold text-brand-600 uppercase">${b.city}</span>
+                                                <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Buka</span>
+                                            </div>
+                                            <h4 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${b.name}</h4>
+                                            <p class="text-[11px] text-slate-500 mt-1">${b.addr}</p>
                                         </div>
-                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">ZAP Clinic - Deli Park Medan</h4>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">DeliPark Mall LGM-35A, Jl. Putri Hijau No.1, Kesawan, Medan</p>
-                                    </div>
-                                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400 flex justify-between items-center">
-                                        <span><i class="fas fa-clock mr-1"></i>10.00 - 20.00</span>
-                                        <span class="text-amber-400 font-bold"><i class="fas fa-star text-[10px]"></i> 5.0</span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase">Medan</span>
-                                            <span class="text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-0.5 rounded-full">Buka</span>
+                                        <div class="mt-4 pt-2.5 border-t border-slate-100 dark:border-slate-700 text-[11px] text-slate-400 flex justify-between items-center">
+                                            <span><i class="fas fa-clock mr-1"></i>${b.time}</span>
+                                            <span class="text-amber-400 font-bold"><i class="fas fa-star text-[9px]"></i> 4.9</span>
                                         </div>
-                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">ZAP Clinic Sun Plaza Medan</h4>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Sun Plaza Lt. 1 Unit C15-16, Jl. KH. Zainul Arifin No.7, Medan</p>
                                     </div>
-                                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400 flex justify-between items-center">
-                                        <span><i class="fas fa-clock mr-1"></i>10.00 - 21.00</span>
-                                        <span class="text-amber-400 font-bold"><i class="fas fa-star text-[10px]"></i> 4.9</span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase">Medan</span>
-                                            <span class="text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-0.5 rounded-full">Buka</span>
-                                        </div>
-                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">ZAP Clinic Pattimura Medan</h4>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Jl. Kapten Patimura No.137, Darat, Medan Baru</p>
-                                    </div>
-                                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400 flex justify-between items-center">
-                                        <span><i class="fas fa-clock mr-1"></i>09.00 - 20.00</span>
-                                        <span class="text-amber-400 font-bold"><i class="fas fa-star text-[10px]"></i> 4.9</span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase">Jakarta</span>
-                                            <span class="text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-0.5 rounded-full">Buka</span>
-                                        </div>
-                                        <h4 class="font-bold text-slate-900 dark:text-white text-sm">ZAP Clinic Kebayoran Baru</h4>
-                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Jl. Wolter Monginsidi No.14, Kebayoran Baru, Jakarta Selatan</p>
-                                    </div>
-                                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-400 flex justify-between items-center">
-                                        <span><i class="fas fa-clock mr-1"></i>09.00 - 20.00</span>
-                                        <span class="text-amber-400 font-bold"><i class="fas fa-star text-[10px]"></i> 4.9</span>
-                                    </div>
-                                </div>
+                                `).join('')}
                             </div>
                         </div>
                     </div>
@@ -801,124 +684,105 @@
             `;
         }
 
-        // STAGE 2: LOGIN / DAFTAR
         function renderStageLogin() {
             return `
-                <div class="max-w-md mx-auto my-16 px-4">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 border border-slate-200 dark:border-slate-700">
-                        <div class="text-center mb-8">
-                            <div class="w-16 h-16 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-3xl mx-auto mb-4 shadow-lg shadow-brand-600/30">
+                <div class="max-w-md mx-auto my-10 sm:my-16 px-4">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700">
+                        <div class="text-center mb-6 sm:mb-8">
+                            <div class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3 shadow-lg shadow-brand-600/30">
                                 Z
                             </div>
-                            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Masuk ke Account ZIP</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Silakan login terlebih dahulu untuk melakukan booking treatment & melihat histori perawatan Anda.</p>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Masuk ke Account ZIP</h2>
+                            <p class="text-xs text-slate-500 mt-1">Login untuk booking treatment & melihat riwayat pesanan.</p>
                         </div>
 
-                        <form onsubmit="handleLoginSubmit(event)" class="space-y-5">
+                        <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Email / Nomor WhatsApp</label>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Email / No. WhatsApp</label>
                                 <div class="relative">
-                                    <i class="fas fa-envelope absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                                    <input type="email" id="loginEmail" required placeholder="pasien@gmail.com" class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 dark:text-white transition-colors">
+                                    <i class="fas fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                                    <input type="email" id="loginEmail" required placeholder="pasien@gmail.com" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 dark:text-white">
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Kata Sandi</label>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kata Sandi</label>
                                 <div class="relative">
-                                    <i class="fas fa-lock absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                                    <input type="password" required value="12345678" placeholder="••••••••" class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 dark:text-white transition-colors">
+                                    <i class="fas fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                                    <input type="password" required value="12345678" placeholder="••••••••" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 dark:text-white">
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between text-xs">
-                                <label class="flex items-center space-x-2 text-slate-600 dark:text-slate-400 cursor-pointer">
-                                    <input type="checkbox" checked class="rounded text-brand-600 focus:ring-brand-500">
-                                    <span>Ingat Saya</span>
-                                </label>
-                                <a href="#" class="text-brand-600 hover:underline font-semibold">Lupa Password?</a>
-                            </div>
-
-                            <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition-all text-sm">
+                            <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md text-xs transition-all mt-2">
                                 Masuk Sekarang
                             </button>
                         </form>
-
-                        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700 text-center">
-                            <p class="text-xs text-slate-500">Belum punya akun? <a href="#" onclick="showToast('Fitur pendaftaran otomatis disederhanakan. Silakan gunakan form login langsung.', 'info')" class="text-brand-600 font-bold hover:underline">Daftar Akun Baru</a></p>
-                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // STAGE 3: KATALOG TREATMENT
         function renderStageKatalog() {
-            const categories = ['Semua', 'Facial & Laser', 'Laser & Light', 'Hair Removal', 'Body & Drips'];
-            
+            const categories = ['Semua', 'Facial & Laser', 'Hair Removal', 'Body & Drips'];
             let filtered = TREATMENTS_DATA.filter(item => {
                 const matchCat = state.activeCategory === 'Semua' || item.category === state.activeCategory;
-                const nameStr = item.name || item.title || '';
-                const descStr = item.description || '';
                 const query = (state.searchQuery || '').toLowerCase();
-                const matchSearch = nameStr.toLowerCase().includes(query) || descStr.toLowerCase().includes(query);
+                const matchSearch = item.name.toLowerCase().includes(query) || item.description.toLowerCase().includes(query);
                 return matchCat && matchSearch;
             });
 
             return `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <!-- Title & Search Bar -->
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                         <div>
-                            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">Katalog Perawatan Kecantikan</h1>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Pilih perawatan estetika & laser terbaik sesuai kebutuhan kulit Anda.</p>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Katalog Perawatan</h1>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pilih treatment estetika terbaik sesuai kebutuhan kulit Anda.</p>
                         </div>
-
-                        <div class="relative w-full md:w-80">
-                            <i class="fas fa-search absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                            <input type="text" placeholder="Cari treatment..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderApp();" class="w-full pl-11 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 dark:text-white">
+                        <div class="relative w-full md:w-72">
+                            <i class="fas fa-search absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                            <input type="text" placeholder="Cari treatment..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderApp();" class="w-full pl-10 pr-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 dark:text-white">
                         </div>
                     </div>
 
                     <!-- Category Pills -->
-                    <div class="flex items-center space-x-2 overflow-x-auto pb-4 mb-8 custom-scrollbar">
+                    <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-6 custom-scrollbar">
                         ${categories.map(cat => `
-                            <button onclick="state.activeCategory = '${cat}'; renderApp();" class="px-5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${state.activeCategory === cat ? 'bg-brand-600 text-white shadow-md' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'}">
+                            <button onclick="state.activeCategory = '${cat}'; renderApp();" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${state.activeCategory === cat ? 'bg-brand-600 text-white shadow' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'}">
                                 ${cat}
                             </button>
                         `).join('')}
                     </div>
 
-                    <!-- Grid Treatments -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         ${filtered.length > 0 ? filtered.map(item => `
-                            <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group">
-                                <div class="relative overflow-hidden h-52">
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-md hover:shadow-xl transition-all flex flex-col group">
+                                <div class="relative overflow-hidden h-48">
                                     <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${item.name}">
-                                    ${item.badge ? `<span class="absolute top-4 left-4 bg-brand-600 text-white font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-widest shadow-md">${item.badge}</span>` : ''}
+                                    ${item.badge ? `<span class="absolute top-3 left-3 bg-brand-600 text-white font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-widest shadow">${item.badge}</span>` : ''}
                                 </div>
-                                <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="p-5 flex-grow flex flex-col justify-between space-y-3">
                                     <div>
-                                        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-2">
+                                        <div class="flex items-center justify-between text-[11px] text-slate-500 mb-1">
                                             <span>${item.category}</span>
                                             <div class="flex items-center text-amber-400 font-bold">
-                                                <i class="fas fa-star text-xs mr-1"></i>
+                                                <i class="fas fa-star text-[10px] mr-1"></i>
                                                 <span>${item.rating}</span>
                                             </div>
                                         </div>
-                                        <h3 class="text-lg font-bold text-slate-900 dark:text-white">${item.name}</h3>
-                                        <p class="text-slate-600 dark:text-slate-300 text-xs line-clamp-2 mt-2 leading-relaxed">${item.description}</p>
+                                        <h3 class="text-base font-bold text-slate-900 dark:text-white">${item.name}</h3>
+                                        <p class="text-slate-600 dark:text-slate-300 text-xs line-clamp-2 mt-1 leading-relaxed">${item.description}</p>
                                     </div>
-                                    <div class="pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
                                         <div>
-                                            <span class="text-xs text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
-                                            <span class="text-base font-extrabold text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
+                                            <span class="text-[10px] text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
+                                            <span class="text-sm font-extrabold text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
                                         </div>
                                         <div class="flex space-x-2">
-                                            <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-brand-50 hover:text-brand-600 dark:hover:bg-slate-600 rounded-xl transition-colors" title="Tambah ke Keranjang">
-                                                <i class="fas fa-cart-plus text-sm"></i>
+                                            <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="p-2 bg-slate-100 dark:bg-slate-700 hover:bg-brand-50 hover:text-brand-600 rounded-xl transition-colors" title="Tambah">
+                                                <i class="fas fa-cart-plus text-xs"></i>
                                             </button>
-                                            <button onclick="requireAuthAndNavigate('detail', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs shadow-md transition-colors">
+                                            <button onclick="requireAuthAndNavigate('detail', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs shadow">
                                                 Booking
                                             </button>
                                         </div>
@@ -926,10 +790,9 @@
                                 </div>
                             </div>
                         `).join('') : `
-                            <div class="col-span-full text-center py-16 bg-white dark:bg-slate-800 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700">
-                                <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
-                                <h3 class="text-lg font-bold text-slate-700 dark:text-slate-300">Treatment tidak ditemukan</h3>
-                                <p class="text-xs text-slate-400">Coba ubah kata kunci pencarian atau kategori filter Anda.</p>
+                            <div class="col-span-full text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300">
+                                <i class="fas fa-search text-3xl text-slate-300 mb-2"></i>
+                                <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300">Treatment tidak ditemukan</h3>
                             </div>
                         `}
                     </div>
@@ -937,46 +800,45 @@
             `;
         }
 
-        // STAGE 4: DETAIL TREATMENT
         function renderStageDetail() {
             const item = state.selectedTreatment;
             return `
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <button onclick="navigateTo('katalog')" class="mb-6 flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-brand-600 transition-colors">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <button onclick="navigateTo('katalog')" class="mb-5 flex items-center space-x-2 text-xs font-bold text-slate-500 hover:text-brand-600 transition-colors">
                         <i class="fas fa-arrow-left"></i>
                         <span>Kembali ke Katalog</span>
                     </button>
 
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 md:grid-cols-2">
-                        <div class="relative h-80 md:h-full">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 md:grid-cols-2">
+                        <div class="relative h-64 md:h-full">
                             <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-full h-full object-cover" alt="${item.name}">
-                            <span class="absolute top-4 left-4 bg-brand-600 text-white font-bold text-xs px-3 py-1 rounded-full shadow-md">
+                            <span class="absolute top-3 left-3 bg-brand-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-full shadow">
                                 ${item.category}
                             </span>
                         </div>
 
-                        <div class="p-8 flex flex-col justify-between space-y-6">
+                        <div class="p-6 sm:p-8 flex flex-col justify-between space-y-5">
                             <div>
                                 <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
                                     <div class="flex items-center text-amber-400 font-bold">
                                         <i class="fas fa-star mr-1"></i>
-                                        <span>${item.rating} (${item.reviews} Ulasan Pasien)</span>
+                                        <span>${item.rating} (${item.reviews} Ulasan)</span>
                                     </div>
                                     <span class="flex items-center space-x-1 font-semibold">
-                                        <i class="fas fa-clock text-slate-400"></i>
+                                        <i class="fas fa-clock text-slate-400 text-[10px]"></i>
                                         <span>${item.duration}</span>
                                     </span>
                                 </div>
 
-                                <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white mb-3">${item.name}</h1>
-                                <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">${item.description}</p>
+                                <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2.5">${item.name}</h1>
+                                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">${item.description}</p>
 
-                                <div class="space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/50">
-                                    <h4 class="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">Manfaat Perawatan:</h4>
-                                    <ul class="space-y-2">
+                                <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-700/50">
+                                    <h4 class="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-wider">Manfaat Perawatan:</h4>
+                                    <ul class="space-y-1.5">
                                         ${item.benefits.map(b => `
-                                            <li class="flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-300">
-                                                <i class="fas fa-check-circle text-brand-500"></i>
+                                            <li class="flex items-center space-x-2 text-[11px] text-slate-600 dark:text-slate-300">
+                                                <i class="fas fa-check-circle text-brand-500 text-[10px]"></i>
                                                 <span>${b}</span>
                                             </li>
                                         `).join('')}
@@ -984,19 +846,18 @@
                                 </div>
                             </div>
 
-                            <div class="pt-6 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between gap-4">
+                            <div class="pt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between gap-3">
                                 <div>
-                                    <span class="text-xs text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
-                                    <span class="text-2xl font-black text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
+                                    <span class="text-[10px] text-slate-400 line-through block">${formatRupiah(item.originalPrice)}</span>
+                                    <span class="text-lg sm:text-xl font-black text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
                                 </div>
 
-                                <div class="flex space-x-3">
-                                    <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-5 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-white font-bold rounded-xl text-xs transition-colors flex items-center space-x-2">
+                                <div class="flex space-x-2">
+                                    <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-white font-bold rounded-xl text-xs transition-colors">
                                         <i class="fas fa-cart-plus"></i>
-                                        <span>+ Keranjang</span>
                                     </button>
-                                    <button onclick="requireAuthAndNavigate('bookingForm', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-brand-600/30 transition-all">
-                                        Booking Sekarang
+                                    <button onclick="requireAuthAndNavigate('bookingForm', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md">
+                                        Booking
                                     </button>
                                 </div>
                             </div>
@@ -1006,47 +867,46 @@
             `;
         }
 
-        // STAGE 5: KERANJANG
         function renderStageKeranjang() {
             const subtotal = state.cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const discountAmount = subtotal * (state.bookingDetails.discount < 1 ? state.bookingDetails.discount : 0);
             const total = subtotal - discountAmount;
 
             return `
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-8">Keranjang Perawatan</h1>
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Keranjang Perawatan</h1>
 
                     ${state.cart.length === 0 ? `
-                        <div class="bg-white dark:bg-slate-800 rounded-3xl p-12 text-center border border-slate-200 dark:border-slate-700 shadow-sm">
-                            <div class="w-20 h-20 bg-slate-100 dark:bg-slate-700/50 rounded-full flex items-center justify-center text-slate-400 text-3xl mx-auto mb-4">
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl p-10 text-center border border-slate-200 dark:border-slate-700">
+                            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400 text-2xl mx-auto mb-3">
                                 <i class="fas fa-shopping-bag"></i>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Keranjang Anda Masih Kosong</h3>
-                            <p class="text-xs text-slate-400 mt-2 mb-6">Pilih perawatan kulit impian Anda di katalog kami.</p>
-                            <button onclick="navigateTo('katalog')" class="px-6 py-3 bg-brand-600 text-white font-bold rounded-xl text-xs shadow-md">
-                                Jelajahi Perawatan
+                            <h3 class="text-base font-bold text-slate-800 dark:text-white">Keranjang Masih Kosong</h3>
+                            <p class="text-xs text-slate-400 mt-1 mb-5">Pilih treatment kulit impian Anda di katalog.</p>
+                            <button onclick="navigateTo('katalog')" class="px-5 py-2.5 bg-brand-600 text-white font-bold rounded-xl text-xs shadow">
+                                Katalog Treatment
                             </button>
                         </div>
                     ` : `
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div class="lg:col-span-2 space-y-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2 space-y-3">
                                 ${state.cart.map(item => `
-                                    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-4">
-                                        <div class="flex items-center space-x-4">
-                                            <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-20 h-20 rounded-xl object-cover" alt="${item.name}">
+                                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-16 h-16 rounded-xl object-cover" alt="${item.name}">
                                             <div>
-                                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">${item.name}</h4>
-                                                <span class="text-xs text-brand-600 dark:text-brand-400 font-bold block mt-1">${formatRupiah(item.price)}</span>
+                                                <h4 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${item.name}</h4>
+                                                <span class="text-xs text-brand-600 font-bold block mt-0.5">${formatRupiah(item.price)}</span>
                                             </div>
                                         </div>
 
-                                        <div class="flex items-center space-x-3">
-                                            <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
-                                                <button onclick="updateCartQty(${item.id}, -1)" class="w-7 h-7 bg-white dark:bg-slate-800 rounded text-xs font-bold shadow-sm">-</button>
-                                                <span class="text-xs font-bold px-2">${item.qty}</span>
-                                                <button onclick="updateCartQty(${item.id}, 1)" class="w-7 h-7 bg-white dark:bg-slate-800 rounded text-xs font-bold shadow-sm">+</button>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
+                                                <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 bg-white dark:bg-slate-800 rounded text-xs font-bold">-</button>
+                                                <span class="text-xs font-bold px-1.5">${item.qty}</span>
+                                                <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 bg-white dark:bg-slate-800 rounded text-xs font-bold">+</button>
                                             </div>
-                                            <button onclick="updateCartQty(${item.id}, -${item.qty})" class="text-rose-500 hover:text-rose-700 text-xs p-2">
+                                            <button onclick="updateCartQty(${item.id}, -${item.qty})" class="text-rose-500 text-xs p-1.5">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </div>
@@ -1054,12 +914,12 @@
                                 `).join('')}
                             </div>
 
-                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 h-fit space-y-6">
-                                <h3 class="font-bold text-slate-900 dark:text-white text-base">Ringkasan Pesanan</h3>
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 h-fit space-y-5">
+                                <h3 class="font-bold text-slate-900 dark:text-white text-sm">Ringkasan Pesanan</h3>
                                 
-                                <div class="space-y-3 text-xs">
+                                <div class="space-y-2.5 text-xs">
                                     <div class="flex justify-between text-slate-500">
-                                        <span>Subtotal Treatment</span>
+                                        <span>Subtotal</span>
                                         <span class="font-bold text-slate-800 dark:text-slate-200">${formatRupiah(subtotal)}</span>
                                     </div>
                                     ${discountAmount > 0 ? `
@@ -1068,22 +928,22 @@
                                             <span>-${formatRupiah(discountAmount)}</span>
                                         </div>
                                     ` : ''}
-                                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between text-sm font-extrabold text-slate-900 dark:text-white">
-                                        <span>Total Biaya</span>
-                                        <span class="text-brand-600 dark:text-brand-400">${formatRupiah(total)}</span>
+                                    <div class="pt-2.5 border-t border-slate-100 dark:border-slate-700 flex justify-between text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+                                        <span>Total</span>
+                                        <span class="text-brand-600">${formatRupiah(total)}</span>
                                     </div>
                                 </div>
 
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400">Kode Promo / Voucher</label>
+                                <div class="space-y-1.5">
+                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-400">Kode Voucher</label>
                                     <div class="flex space-x-2">
                                         <input type="text" id="voucherInput" placeholder="ZAPNEW10" class="flex-grow px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase font-mono">
-                                        <button onclick="applyVoucher()" class="px-4 py-2 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl text-xs">Gunakan</button>
+                                        <button onclick="applyVoucher()" class="px-3.5 py-2 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl text-xs">Pakai</button>
                                     </div>
                                 </div>
 
-                                <button onclick="requireAuthAndNavigate('bookingForm')" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 text-xs transition-all">
-                                    Lanjut ke Langkah Booking
+                                <button onclick="requireAuthAndNavigate('bookingForm')" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow text-xs transition-all">
+                                    Lanjut Booking
                                 </button>
                             </div>
                         </div>
@@ -1092,47 +952,42 @@
             `;
         }
 
-        // STAGE 6: FORM BOOKING 10 LANGKAH
         function renderStageBookingForm() {
             const steps = [
-                "Pilih Cabang Klinik", "Pilih Dokter Spesialis", "Pilih Tanggal & Jam",
-                "Informasi Identitas Pasien", "Catatan Khusus", "Review Perawatan",
-                "Metode Pembayaran", "Syarat & Ketentuan", "Verifikasi Data", "Selesaikan Booking"
+                "Pilih Cabang", "Pilih Dokter", "Pilih Jadwal",
+                "Identitas Pasien", "Catatan Khusus", "Review",
+                "Pembayaran", "Syarat & Ketentuan", "Verifikasi", "Selesai"
             ];
 
             return `
-                <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-8">
-                        
-                        <!-- Progress Header -->
+                <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6">
                         <div>
-                            <div class="flex items-center justify-between text-xs font-bold text-brand-600 mb-2">
+                            <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-brand-600 mb-1.5">
                                 <span>LANGKAH ${state.bookingDetails.step} DARI 10</span>
                                 <span>${steps[state.bookingDetails.step - 1]}</span>
                             </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
                                 <div class="bg-brand-600 h-full transition-all duration-300" style="width: ${(state.bookingDetails.step / 10) * 100}%"></div>
                             </div>
                         </div>
 
-                        <!-- Step Content Dynamic Router -->
-                        <div class="min-h-[220px]">
+                        <div class="min-h-[200px]">
                             ${renderStepContent(state.bookingDetails.step)}
                         </div>
 
-                        <!-- Form Navigation Buttons -->
-                        <div class="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-700">
-                            <button onclick="changeBookingStep(-1)" ${state.bookingDetails.step === 1 ? 'disabled class="opacity-40 cursor-not-allowed px-5 py-2.5 rounded-xl border text-xs font-bold"' : 'class="px-5 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold"'}>
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
+                            <button onclick="changeBookingStep(-1)" ${state.bookingDetails.step === 1 ? 'disabled class="opacity-40 cursor-not-allowed px-4 py-2 rounded-xl border text-xs font-bold"' : 'class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold"'}>
                                 Sebelumnya
                             </button>
 
                             ${state.bookingDetails.step === 10 ? `
-                                <button onclick="finishBooking()" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-xs shadow-lg shadow-emerald-600/30">
+                                <button onclick="finishBooking()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md">
                                     Bayar & Dapatkan QR Tiket
                                 </button>
                             ` : `
-                                <button onclick="changeBookingStep(1)" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md">
-                                    Langkah Selanjutnya
+                                <button onclick="changeBookingStep(1)" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow">
+                                    Selanjutnya
                                 </button>
                             `}
                         </div>
@@ -1145,20 +1000,11 @@
             switch(step) {
                 case 1:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Pilih Lokasi Cabang Outlet ZAP Clinic</h3>
-                            <div class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
-                                ${[
-                                    'ZAP Clinic - Deli Park Medan', 
-                                    'ZAP Clinic Sun Plaza Medan', 
-                                    'ZAP Clinic Pattimura Medan', 
-                                    'ZAP Clinic Cemara Asri Medan',
-                                    'ZAP Clinic Jakarta - Kebayoran Baru', 
-                                    'ZAP Clinic Jakarta - Central Park', 
-                                    'ZAP Clinic Tangerang - BSD City', 
-                                    'ZAP Clinic Surabaya - West Surabaya'
-                                ].map(c => `
-                                    <label class="flex items-center space-x-3 p-3.5 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.cabang === c ? 'border-brand-600 bg-brand-50/30 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Cabang ZAP Clinic</h3>
+                            <div class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                                ${['ZAP Clinic - Deli Park Medan', 'ZAP Clinic Sun Plaza Medan', 'ZAP Clinic Pattimura Medan', 'ZAP Clinic Jakarta - Kebayoran Baru'].map(c => `
+                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.cabang === c ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
                                         <input type="radio" name="cabang" value="${c}" ${state.bookingDetails.cabang === c ? 'checked' : ''} onchange="state.bookingDetails.cabang = this.value" class="text-brand-600">
                                         <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${c}</span>
                                     </label>
@@ -1168,11 +1014,11 @@
                     `;
                 case 2:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Pilih Dokter Spesialis Perawatan</h3>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Dokter Spesialis</h3>
                             <div class="space-y-2">
                                 ${['dr. Anita Rahma, Sp.D.V.E', 'dr. Budi Santoso, Sp.D.V.E', 'dr. Clara Devina, Dip.AAAM'].map(d => `
-                                    <label class="flex items-center space-x-3 p-3.5 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.dokter === d ? 'border-brand-600 bg-brand-50/30 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
+                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.dokter === d ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
                                         <input type="radio" name="dokter" value="${d}" ${state.bookingDetails.dokter === d ? 'checked' : ''} onchange="state.bookingDetails.dokter = this.value" class="text-brand-600">
                                         <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${d}</span>
                                     </label>
@@ -1182,98 +1028,64 @@
                     `;
                 case 3:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Jadwal Perawatan</h3>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Jadwal Perawatan</h3>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1">Tanggal Kedatangan</label>
-                                <input type="date" value="${state.bookingDetails.tanggal || '2026-10-25'}" onchange="state.bookingDetails.tanggal = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white focus:outline-none focus:border-brand-500">
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">Tanggal</label>
+                                <input type="date" value="${state.bookingDetails.tanggal}" onchange="state.bookingDetails.tanggal = this.value" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1">Jam Kedatangan</label>
-                                <select onchange="state.bookingDetails.jam = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white focus:outline-none focus:border-brand-500">
+                                <label class="block text-[11px] font-bold text-slate-500 mb-1">Jam</label>
+                                <select onchange="state.bookingDetails.jam = this.value" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                                     <option value="10:00" ${state.bookingDetails.jam === '10:00' ? 'selected' : ''}>10:00 WIB</option>
                                     <option value="13:00" ${state.bookingDetails.jam === '13:00' ? 'selected' : ''}>13:00 WIB</option>
                                     <option value="16:00" ${state.bookingDetails.jam === '16:00' ? 'selected' : ''}>16:00 WIB</option>
-                                    <option value="19:00" ${state.bookingDetails.jam === '19:00' ? 'selected' : ''}>19:00 WIB</option>
                                 </select>
                             </div>
                         </div>
                     `;
                 case 4:
-                    // LANGKAH 4: INFORMASI IDENTITAS PASIEN
-                    const currentNama = state.bookingDetails.nama || (state.userProfile ? state.userProfile.name : '');
-                    const currentPhone = state.bookingDetails.phone || (state.userProfile ? state.userProfile.phone : '');
-
+                    const curNama = state.bookingDetails.nama || (state.userProfile ? state.userProfile.name : '');
+                    const curPhone = state.bookingDetails.phone || (state.userProfile ? state.userProfile.phone : '');
                     return `
-                        <div class="space-y-5">
-                            <div>
-                                <h3 class="font-bold text-base text-slate-900 dark:text-white">Informasi Identitas Pasien</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Lengkapi nama lengkap dan kontak yang dapat dihubungi untuk konfirmasi kehadiran janji temu.</p>
-                            </div>
-
-                            <div class="space-y-4 bg-slate-50 dark:bg-slate-900/50 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Informasi Identitas Pasien</h3>
+                            <div class="space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
-                                        Nama Lengkap Pasien <span class="text-rose-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <i class="fas fa-user absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                                        <input type="text" 
-                                               required 
-                                               placeholder="Masukkan nama lengkap pasien" 
-                                               value="${currentNama}" 
-                                               oninput="state.bookingDetails.nama = this.value" 
-                                               class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-800 dark:text-white focus:outline-none focus:border-brand-500 transition-colors">
-                                    </div>
+                                    <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Nama Lengkap Pasien *</label>
+                                    <input type="text" required placeholder="Nama lengkap" value="${curNama}" oninput="state.bookingDetails.nama = this.value" class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                                 </div>
-
                                 <div>
-                                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
-                                        Nomor WhatsApp / HP Active <span class="text-rose-500">*</span>
-                                    </label>
-                                    <div class="relative">
-                                        <i class="fab fa-whatsapp absolute left-4 top-3.5 text-slate-400 text-sm"></i>
-                                        <input type="tel" 
-                                               required 
-                                               placeholder="Contoh: 08123456789" 
-                                               value="${currentPhone}" 
-                                               oninput="state.bookingDetails.phone = this.value" 
-                                               class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-800 dark:text-white focus:outline-none focus:border-brand-500 transition-colors">
-                                    </div>
-                                </div>
-
-                                <div class="pt-2 flex items-center space-x-2 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Data pasien terenkripsi aman dan hanya digunakan untuk kepentingan rekam medis & verifikasi janji temu.</span>
+                                    <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">No. WhatsApp Aktif *</label>
+                                    <input type="tel" required placeholder="08123456789" value="${curPhone}" oninput="state.bookingDetails.phone = this.value" class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                                 </div>
                             </div>
                         </div>
                     `;
                 case 5:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Catatan Khusus atau Keluhan Kulit</h3>
-                            <textarea placeholder="Contoh: Kulit sensitif terhadap bahan kimia tertentu, sedang jerawat parah di area pipi." oninput="state.bookingDetails.catatan = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white h-28 focus:outline-none focus:border-brand-500">${state.bookingDetails.catatan}</textarea>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Catatan / Keluhan Kulit</h3>
+                            <textarea placeholder="Contoh: Kulit sensitif..." oninput="state.bookingDetails.catatan = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white h-24">${state.bookingDetails.catatan}</textarea>
                         </div>
                     `;
                 case 6:
                     return `
                         <div class="space-y-3">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Ringkasan Treatment</h3>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl text-xs space-y-2 border border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Ringkasan Treatment</h3>
+                            <div class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl text-xs space-y-1.5 border border-slate-200 dark:border-slate-700">
                                 <p><strong>Treatment:</strong> ${state.selectedTreatment.name}</p>
                                 <p><strong>Biaya:</strong> ${formatRupiah(state.selectedTreatment.price)}</p>
-                                <p><strong>Estimasi Durasi:</strong> ${state.selectedTreatment.duration}</p>
                             </div>
                         </div>
                     `;
                 case 7:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Metode Pembayaran</h3>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Metode Pembayaran</h3>
                             <div class="space-y-2">
-                                ${['QRIS Instan', 'BCA Virtual Account', 'Mandiri VA', 'Kartu Kredit / Debit'].map(m => `
-                                    <label class="flex items-center space-x-3 p-3.5 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.metodePembayaran === m ? 'border-brand-600 bg-brand-50/30 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
+                                ${['QRIS Instan', 'BCA Virtual Account', 'Mandiri VA'].map(m => `
+                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.metodePembayaran === m ? 'border-brand-600 bg-brand-50/40' : 'border-slate-200 dark:border-slate-700'}">
                                         <input type="radio" name="payMethod" value="${m}" ${state.bookingDetails.metodePembayaran === m ? 'checked' : ''} onchange="state.bookingDetails.metodePembayaran = this.value" class="text-brand-600">
                                         <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${m}</span>
                                     </label>
@@ -1283,49 +1095,43 @@
                     `;
                 case 8:
                     return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Syarat & Ketentuan Perawatan</h3>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl text-xs text-slate-500 dark:text-slate-400 space-y-2 max-h-36 overflow-y-auto custom-scrollbar border border-slate-200 dark:border-slate-700">
-                                <p>1. Hadir 15 menit sebelum jam jadwal janji temu Anda.</p>
-                                <p>2. Pembatalan H-1 tidak dikenakan denda administrasi.</p>
-                                <p>3. Patuhi arahan pasca-laser dari Dokter Spesialis.</p>
+                        <div class="space-y-3">
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Syarat & Ketentuan</h3>
+                            <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl text-[11px] text-slate-500 space-y-1.5 border border-slate-200 dark:border-slate-700">
+                                <p>1. Hadir 15 menit sebelum jadwal.</p>
+                                <p>2. Pembatalan H-1 tanpa denda.</p>
                             </div>
                         </div>
                     `;
                 case 9:
                     return `
                         <div class="space-y-3">
-                            <h3 class="font-bold text-base text-slate-900 dark:text-white">Verifikasi Akhir Janji Temu</h3>
-                            <div class="p-4 bg-brand-50/40 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-2xl text-xs space-y-2">
-                                <p><strong>Nama Pasien:</strong> ${state.bookingDetails.nama || state.userProfile?.name || '-'}</p>
-                                <p><strong>Nomor Kontak:</strong> ${state.bookingDetails.phone || state.userProfile?.phone || '-'}</p>
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Verifikasi Akhir</h3>
+                            <div class="p-3.5 bg-brand-50/50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-2xl text-xs space-y-1.5">
+                                <p><strong>Nama:</strong> ${state.bookingDetails.nama || '-'}</p>
                                 <p><strong>Cabang:</strong> ${state.bookingDetails.cabang}</p>
                                 <p><strong>Dokter:</strong> ${state.bookingDetails.dokter}</p>
-                                <p><strong>Jadwal:</strong> ${state.bookingDetails.tanggal || '2026-10-25'} (${state.bookingDetails.jam} WIB)</p>
+                                <p><strong>Jadwal:</strong> ${state.bookingDetails.tanggal} (${state.bookingDetails.jam})</p>
                             </div>
                         </div>
                     `;
                 case 10:
                     return `
-                        <div class="text-center space-y-4 py-4">
-                            <i class="fas fa-check-circle text-5xl text-emerald-500"></i>
-                            <h3 class="font-extrabold text-lg text-slate-900 dark:text-white">Data Booking Siap Dikonfirmasi</h3>
-                            <p class="text-xs text-slate-500">Klik tombol di bawah untuk menyelesaikan pembayaran & menerbitkan QR Tiket Perawatan.</p>
+                        <div class="text-center space-y-3 py-2">
+                            <i class="fas fa-check-circle text-4xl text-emerald-500"></i>
+                            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Siap Konfirmasi Pesanan</h3>
                         </div>
                     `;
             }
         }
 
         function changeBookingStep(delta) {
-            // Validate step 4 inputs before moving forward
             if (state.bookingDetails.step === 4 && delta > 0) {
-                const currentNama = state.bookingDetails.nama || (state.userProfile ? state.userProfile.name : '');
-                if (!currentNama || currentNama.trim() === '') {
-                    showToast("Harap isi Nama Lengkap Pasien terlebih dahulu.", "warning");
+                if (!state.bookingDetails.nama || state.bookingDetails.nama.trim() === '') {
+                    showToast("Harap isi Nama Lengkap Pasien.", "warning");
                     return;
                 }
             }
-
             state.bookingDetails.step = Math.max(1, Math.min(10, state.bookingDetails.step + delta));
             renderApp();
         }
@@ -1333,7 +1139,7 @@
         function finishBooking() {
             const newOrder = {
                 id: "ZIP-" + Math.floor(10000 + Math.random() * 90000),
-                tanggal: state.bookingDetails.tanggal || "2026-10-25",
+                tanggal: state.bookingDetails.tanggal,
                 jam: state.bookingDetails.jam,
                 cabang: state.bookingDetails.cabang,
                 dokter: state.bookingDetails.dokter,
@@ -1342,7 +1148,6 @@
                 status: "Berlangsung",
                 itemsCount: state.cart.length > 0 ? state.cart.reduce((a, b) => a + b.qty, 0) : 1
             };
-
             state.bookingHistory.unshift(newOrder);
             state.cart = [];
             updateCartBadge();
@@ -1350,52 +1155,36 @@
             navigateTo('bookingSukses');
         }
 
-        // STAGE 7: BOOKING BERHASIL
         function renderStageBookingSukses() {
             const lastBooking = state.bookingHistory[0];
             return `
-                <div class="max-w-md mx-auto px-4 py-16 text-center">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-6">
-                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-500 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <div class="max-w-md mx-auto px-4 py-10 text-center">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-5">
+                        <div class="w-14 h-14 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-2xl mx-auto">
                             <i class="fas fa-qrcode"></i>
                         </div>
-
                         <div>
-                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Booking Success</span>
-                            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">Tiket Perawatan Diterbitkan</h2>
-                            <p class="text-xs text-slate-500 mt-1">Kode Booking: <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${lastBooking.id}</span></p>
+                            <span class="text-[10px] font-bold text-emerald-600 uppercase">Success</span>
+                            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">Tiket Diterbitkan</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Kode: <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${lastBooking.id}</span></p>
                         </div>
-
-                        <!-- QR Placeholder -->
-                        <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${lastBooking.id}" alt="QR Tiket" class="w-36 h-36 rounded-lg shadow-sm">
-                            <span class="text-[10px] text-slate-400 mt-3">Tunjukkan QR code ini kepada resepsionis saat tiba di lokasi</span>
+                        <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${lastBooking.id}" alt="QR" class="w-32 h-32 rounded">
+                            <span class="text-[10px] text-slate-400 mt-2">Tunjukkan QR ini ke resepsionis klinik</span>
                         </div>
-
-                        <div class="text-left text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-                            <p><strong>Nama Pasien:</strong> ${state.bookingDetails.nama || state.userProfile?.name || '-'}</p>
-                            <p><strong>Cabang:</strong> ${lastBooking.cabang}</p>
-                            <p><strong>Dokter:</strong> ${lastBooking.dokter}</p>
-                            <p><strong>Jadwal:</strong> ${lastBooking.tanggal} - ${lastBooking.jam} WIB</p>
-                        </div>
-
-                        <div class="flex space-x-3 pt-2">
-                            <button onclick="navigateTo('riwayat')" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl text-xs shadow-md">
-                                Lihat Riwayat Janji Temu
-                            </button>
-                        </div>
+                        <button onclick="navigateTo('riwayat')" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl text-xs shadow">
+                            Lihat Riwayat Janji Temu
+                        </button>
                     </div>
                 </div>
             `;
         }
 
-        // STAGE 8: RIWAYAT BOOKING (Desain Modern Clean Tab View)
         function renderStageRiwayat() {
             const tabs = [
                 { id: 'semua', label: 'Semua' },
                 { id: 'berlangsung', label: 'Berlangsung' },
-                { id: 'selesai', label: 'Selesai' },
-                { id: 'dibatalkan', label: 'Dibatalkan' }
+                { id: 'selesai', label: 'Selesai' }
             ];
 
             const filteredHistory = state.bookingHistory.filter(item => {
@@ -1404,120 +1193,49 @@
             });
 
             return `
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <!-- Section Title & Subtitle -->
-                    <div class="mb-8">
-                        <div class="flex items-center space-x-2 text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest mb-1">
-                            <i class="fas fa-receipt"></i>
-                            <span>Aktivitas Janji Temu</span>
-                        </div>
-                        <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Riwayat Pesanan</h1>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Pantau status reservasi, tiket perawatan, dan histori transaksi klinik Anda.</p>
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="mb-6">
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Riwayat Pesanan</h1>
+                        <p class="text-xs text-slate-500 mt-0.5">Pantau status reservasi dan tiket perawatan Anda.</p>
                     </div>
 
-                    <!-- Status Filter Tabs -->
-                    <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto custom-scrollbar">
+                    <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto custom-scrollbar">
                         ${tabs.map(tab => {
-                            const count = tab.id === 'semua' 
-                                ? state.bookingHistory.length 
-                                : state.bookingHistory.filter(i => i.status.toLowerCase() === tab.id).length;
                             const isActive = state.historyTab === tab.id;
                             return `
-                                <button onclick="state.historyTab = '${tab.id}'; renderApp();" class="py-3 px-4 font-bold text-xs sm:text-sm whitespace-nowrap transition-all border-b-2 flex items-center space-x-2 ${
-                                    isActive 
-                                    ? 'border-brand-600 text-brand-600 dark:text-brand-400 dark:border-brand-400' 
-                                    : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-                                }">
+                                <button onclick="state.historyTab = '${tab.id}'; renderApp();" class="py-2.5 px-3 font-bold text-xs whitespace-nowrap transition-all border-b-2 ${isActive ? 'border-brand-600 text-brand-600 dark:text-brand-400' : 'border-transparent text-slate-500'}">
                                     <span>${tab.label}</span>
-                                    <span class="px-2 py-0.5 rounded-full text-[10px] ${
-                                        isActive 
-                                        ? 'bg-brand-100 text-brand-700 dark:bg-brand-900/50 dark:text-brand-300' 
-                                        : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
-                                    }">${count}</span>
                                 </button>
                             `;
                         }).join('')}
                     </div>
 
-                    <!-- Order Cards List -->
-                    <div class="space-y-5">
-                        ${filteredHistory.length > 0 ? filteredHistory.map(item => {
-                            let statusBadgeClass = "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
-                            let statusIcon = "fa-clock";
-                            if (item.status === 'Selesai') {
-                                statusBadgeClass = "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700";
-                                statusIcon = "fa-check-circle";
-                            } else if (item.status === 'Dibatalkan') {
-                                statusBadgeClass = "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300 border-rose-200 dark:border-rose-800";
-                                statusIcon = "fa-times-circle";
-                            }
-
-                            return `
-                                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-sm hover:shadow-md transition-all p-5 sm:p-6 space-y-4">
-                                    <!-- Header Card: Order ID, Date & Status -->
-                                    <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-700/60 text-xs">
-                                        <div class="flex items-center space-x-3">
-                                            <span class="font-mono font-black text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-lg">${item.id}</span>
-                                            <span class="text-slate-400">•</span>
-                                            <span class="text-slate-500 dark:text-slate-400 font-medium">
-                                                <i class="far fa-calendar-alt mr-1 text-brand-600"></i>${item.tanggal} (${item.jam} WIB)
-                                            </span>
-                                        </div>
-                                        <span class="px-3 py-1 rounded-full font-bold text-[11px] border flex items-center space-x-1.5 ${statusBadgeClass}">
-                                            <i class="fas ${statusIcon} text-[10px]"></i>
-                                            <span>${item.status}</span>
-                                        </span>
+                    <div class="space-y-4">
+                        ${filteredHistory.length > 0 ? filteredHistory.map(item => `
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-5 space-y-3">
+                                <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-700 text-[11px]">
+                                    <span class="font-mono font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">${item.id}</span>
+                                    <span class="text-slate-500"><i class="far fa-calendar-alt mr-1 text-brand-600"></i>${item.tanggal} (${item.jam})</span>
+                                </div>
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                    <div>
+                                        <div class="text-[11px] text-brand-600 font-bold">${item.cabang}</div>
+                                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">${item.treatments.join(' + ')}</h3>
+                                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fas fa-user-md mr-1"></i>${item.dokter}</p>
                                     </div>
-
-                                    <!-- Main Card Info -->
-                                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                                        <div class="space-y-2 flex-grow">
-                                            <div class="flex items-center space-x-2 text-xs text-brand-600 dark:text-brand-400 font-bold">
-                                                <i class="fas fa-hospital-user"></i>
-                                                <span>${item.cabang}</span>
-                                            </div>
-                                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                                                ${item.treatments.join(' + ')}
-                                            </h3>
-                                            <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-2">
-                                                <span><i class="fas fa-user-md mr-1"></i>${item.dokter}</span>
-                                                <span>•</span>
-                                                <span>${item.itemsCount || item.treatments.length} Perawatan</span>
-                                            </p>
-                                        </div>
-
-                                        <!-- Total & Action Buttons -->
-                                        <div class="w-full md:w-auto flex md:flex-col justify-between items-end gap-3 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-700">
-                                            <div class="text-left md:text-right">
-                                                <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Total Pembayaran</span>
-                                                <span class="text-lg font-black text-brand-600 dark:text-brand-400">${formatRupiah(item.total)}</span>
-                                            </div>
-
-                                            <div class="flex items-center space-x-2">
-                                                ${item.status === 'Berlangsung' ? `
-                                                    <button onclick="state.selectedTreatment = TREATMENTS_DATA[0]; navigateTo('bookingSukses')" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-600/20 transition-all flex items-center space-x-1.5">
-                                                        <i class="fas fa-qrcode text-xs"></i>
-                                                        <span>Lihat QR Tiket</span>
-                                                    </button>
-                                                ` : ''}
-                                                <button onclick="showToast('e-Tiket / Bukti Pembayaran berhasil diunduh', 'success')" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors">
-                                                    <i class="fas fa-download mr-1"></i>E-Tiket
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div class="w-full sm:w-auto flex sm:flex-col justify-between items-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                                        <span class="text-sm font-black text-brand-600">${formatRupiah(item.total)}</span>
+                                        ${item.status === 'Berlangsung' ? `
+                                            <button onclick="navigateTo('bookingSukses')" class="px-3 py-1.5 bg-brand-600 text-white rounded-lg text-xs font-bold shadow">
+                                                QR Tiket
+                                            </button>
+                                        ` : ''}
                                     </div>
                                 </div>
-                            `;
-                        }).join('') : `
-                            <div class="bg-white dark:bg-slate-800 rounded-3xl p-12 text-center border border-dashed border-slate-200 dark:border-slate-700">
-                                <div class="w-16 h-16 bg-slate-100 dark:bg-slate-700 text-slate-400 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
-                                    <i class="fas fa-inbox"></i>
-                                </div>
-                                <h3 class="text-base font-bold text-slate-800 dark:text-white">Tidak Ada Riwayat Pesanan</h3>
-                                <p class="text-xs text-slate-400 mt-1 mb-6">Belum ada pesanan perawatan untuk kategori tab "${state.historyTab}".</p>
-                                <button onclick="navigateTo('katalog')" class="px-5 py-2.5 bg-brand-600 text-white text-xs font-bold rounded-xl shadow-md">
-                                    Pesan Treatment Sekarang
-                                </button>
+                            </div>
+                        `).join('') : `
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl p-10 text-center border border-dashed border-slate-300">
+                                <p class="text-xs text-slate-400">Tidak ada riwayat untuk tab ini.</p>
                             </div>
                         `}
                     </div>
