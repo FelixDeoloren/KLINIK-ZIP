@@ -135,10 +135,10 @@
             <div>
                 <h4 class="text-white font-semibold text-sm mb-3">Perawatan Populer</h4>
                 <ul class="space-y-2 text-xs sm:text-sm">
-                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Photo Facial Glow</a></li>
+                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Cryo Fat Freezing Slimming</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Underarm Super Hair Removal</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">IPL Rejuvenation Therapy</a></li>
-                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Acne Clear Advanced Laser</a></li>
+                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Acne Light Therapy (IPL)</a></li>
                 </ul>
             </div>
 
@@ -174,12 +174,12 @@
                 "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80"
             ],
             treatments: {
-                photoFacial: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80",
+                cryoSlimming: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
                 iplRejuv: "https://images.unsplash.com/photo-1512290900673-3b10b471ca40?auto=format&fit=crop&w=600&q=80",
                 hairRemoval: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=600&q=80",
                 acneLaser: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=600&q=80",
                 vitDrip: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=600&q=80",
-                bodySlim: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80"
+                bodySlim: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80"
             },
             clinic: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80",
             fallback: "https://placehold.co/600x400/059669/ffffff?text=Klinik+ZIP+Treatment"
@@ -207,17 +207,21 @@
             },
             {
                 id: 2,
-                name: "Photo Facial Glow Express",
-                category: "Facial & Laser",
-                price: 299000,
-                originalPrice: 450000,
+                name: "Cryo Fat Freezing Slimming",
+                category: "Body & Drips",
+                price: 599000,
+                originalPrice: 850000,
                 rating: 4.8,
                 reviews: 184,
-                duration: "30 Menit",
-                image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80",
+                duration: "45 Menit",
+                image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
                 badge: "PROMO",
-                description: "Terapi Laser Rejuvenation canggih untuk memicu regenerasi kolagen mendalam, memudarkan pigmentasi, meremajakan sel kulit, dan mengencangkan tekstur wajah secara maksimal.",
-                benefits: ["Menstimulasi pembentukan kolagen alami", "Mengencangkan & meremajakan sel kulit", "Memudarkan flek hitam & hiperpigmentasi"]
+                description: "Teknologi pendinginan lemak non-invasif untuk membekukan dan menghancurkan sel-sel lemak membandel secara permanen tanpa tindakan operasi.",
+                benefits: [
+                    "Menghancurkan sel lemak membandel dengan suhu dingin",
+                    "Mengecilkan lingkar tubuh area perut, paha, atau lengan",
+                    "Aman, non-invasif, dan tanpa waktu pemulihan (zero downtime)"
+                ]
             },
             {
                 id: 3,
@@ -232,6 +236,25 @@
                 badge: "FAVORITE",
                 description: "Teknologi SHR Jerman tanpa rasa sakit untuk menghilangkan bulu ketiak secara permanen sekaligus mencerahkan area kulit ketiak yang gelap.",
                 benefits: ["Bebas rasa sakit dengan cooling head", "Menghilangkan akar rambut secara permanen", "Mencerahkan lipatan kulit ketiak"]
+            },
+            {
+                id: 4,
+                name: "Acne Light Therapy (IPL)",
+                category: "Facial & Laser",
+                price: 349000,
+                originalPrice: 500000,
+                rating: 4.9,
+                reviews: 116,
+                duration: "40 Menit",
+                image: IMAGES.treatments.acneLaser,
+                badge: "NEW",
+                description: "Terapi sinar IPL intensif untuk membunuh bakteri penyebab jerawat aktif, meredakan kemerahan peradangan, dan memudarkan bekas jerawat kemerahan (PIE).",
+                benefits: [
+                    "Membunuh bakteri P. acnes pembawa jerawat",
+                    "Meredakan peradangan & kemerahan aktif",
+                    "Mengontrol produksi minyak/sebum berlebih",
+                    "Menyamarkan noda bekas jerawat merah"
+                ]
             },
             {
                 id: 5,
@@ -249,7 +272,7 @@
             },
             {
                 id: 6,
-                name: "Z-Weightloss Body Sculpting",
+                name: "ZIP-Weightloss Body Sculpting",
                 category: "Body & Drips",
                 price: 899000,
                 originalPrice: 1200000,
@@ -272,7 +295,7 @@
             selectedTreatment: TREATMENTS_DATA[0],
             bookingDetails: {
                 step: 1,
-                cabang: 'ZAP Clinic - Deli Park Medan',
+                cabang: 'ZIP Clinic - Deli Park Medan',
                 dokter: 'dr. Anita Rahma, Sp.D.V.E',
                 tanggal: '2026-10-25',
                 jam: '10:00',
@@ -289,10 +312,10 @@
                     id: "ZIP-89210",
                     tanggal: "2026-10-15",
                     jam: "14:00",
-                    cabang: "ZAP Clinic - Deli Park Medan",
+                    cabang: "ZIP Clinic - Deli Park Medan",
                     dokter: "dr. Anita Rahma, Sp.D.V.E",
-                    treatments: ["Photo Facial Glow Express"],
-                    total: 299000,
+                    treatments: ["Cryo Fat Freezing Slimming"],
+                    total: 599000,
                     status: "Selesai",
                     itemsCount: 1
                 },
@@ -300,7 +323,7 @@
                     id: "ZIP-74821",
                     tanggal: "2026-10-26",
                     jam: "10:00",
-                    cabang: "ZAP Clinic Sun Plaza Medan",
+                    cabang: "ZIP Clinic Sun Plaza Medan",
                     dokter: "dr. Budi Santoso, Sp.D.V.E",
                     treatments: ["Laser Rejuvenation Therapy", "Underarm Super Hair Removal (SHR)"],
                     total: 2049000,
@@ -468,7 +491,7 @@
 
         function applyVoucher() {
             const code = document.getElementById('voucherInput')?.value.toUpperCase();
-            if (code === 'ZAPNEW10') {
+            if (code === 'ZIPNEW10') {
                 state.bookingDetails.discount = 0.10;
                 state.bookingDetails.voucherCode = code;
                 showToast("Voucher Diskon 10% Dipasang!", "success");
@@ -543,7 +566,7 @@
                             </div>
                             <div>
                                 <h3 class="text-sm sm:text-base font-bold">Voucher Diskon 10% Member Baru</h3>
-                                <p class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">Gunakan kode <span class="font-mono font-bold bg-white/20 px-1.5 py-0.5 rounded text-amber-300">ZAPNEW10</span> saat checkout.</p>
+                                <p class="text-[11px] sm:text-xs text-emerald-100 mt-0.5">Gunakan kode <span class="font-mono font-bold bg-white/20 px-1.5 py-0.5 rounded text-amber-300">ZIPNEW10</span> saat checkout.</p>
                             </div>
                         </div>
                         <button onclick="navigateTo('katalog')" class="w-full sm:w-auto px-5 py-2.5 bg-white text-brand-800 font-bold rounded-xl hover:bg-emerald-50 transition-colors text-xs shadow">
@@ -638,15 +661,15 @@
                         <div class="pt-6 border-t border-slate-200 dark:border-slate-700">
                             <div class="text-center max-w-xl mx-auto mb-8">
                                 <span class="text-brand-600 font-bold text-[11px] uppercase tracking-widest">Jaringan Outlet</span>
-                                <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Cabang ZAP Clinic</h3>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Cabang ZIP Clinic</h3>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                                 ${[
-                                    {city: 'Medan', name: 'ZAP Clinic - Deli Park Medan', addr: 'DeliPark Mall LGM-35A, Jl. Putri Hijau', time: '10.00 - 20.00'},
-                                    {city: 'Medan', name: 'ZAP Clinic Sun Plaza Medan', addr: 'Sun Plaza Lt. 1 Unit C15-16', time: '10.00 - 21.00'},
-                                    {city: 'Medan', name: 'ZAP Clinic Pattimura Medan', addr: 'Jl. Kapten Patimura No.137', time: '09.00 - 20.00'},
-                                    {city: 'Jakarta', name: 'ZAP Clinic Kebayoran Baru', addr: 'Jl. Wolter Monginsidi No.14', time: '09.00 - 20.00'}
+                                    {city: 'Medan', name: 'ZIP Clinic - Deli Park Medan', addr: 'DeliPark Mall LGM-35A, Jl. Putri Hijau', time: '10.00 - 20.00'},
+                                    {city: 'Medan', name: 'ZIP Clinic Sun Plaza Medan', addr: 'Sun Plaza Lt. 1 Unit C15-16', time: '10.00 - 21.00'},
+                                    {city: 'Medan', name: 'ZIP Clinic Pattimura Medan', addr: 'Jl. Kapten Patimura No.137', time: '09.00 - 20.00'},
+                                    {city: 'Jakarta', name: 'ZIP Clinic Kebayoran Baru', addr: 'Jl. Wolter Monginsidi No.14', time: '09.00 - 20.00'}
                                 ].map(b => `
                                     <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
                                         <div>
@@ -923,7 +946,7 @@
                                 <div class="space-y-1.5">
                                     <label class="text-[11px] font-bold text-slate-600 dark:text-slate-400">Kode Voucher</label>
                                     <div class="flex space-x-2">
-                                        <input type="text" id="voucherInput" placeholder="ZAPNEW10" class="flex-grow px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase font-mono">
+                                        <input type="text" id="voucherInput" placeholder="ZIPNEW10" class="flex-grow px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase font-mono">
                                         <button onclick="applyVoucher()" class="px-3.5 py-2 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl text-xs">Pakai</button>
                                     </div>
                                 </div>
@@ -987,9 +1010,9 @@
                 case 1:
                     return `
                         <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Cabang ZAP Clinic</h3>
+                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Cabang ZIP Clinic</h3>
                             <div class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
-                                ${['ZAP Clinic - Deli Park Medan', 'ZAP Clinic Sun Plaza Medan', 'ZAP Clinic Pattimura Medan', 'ZAP Clinic Jakarta - Kebayoran Baru'].map(c => `
+                                ${['ZIP Clinic - Deli Park Medan', 'ZIP Clinic Sun Plaza Medan', 'ZIP Clinic Pattimura Medan', 'ZIP Clinic Jakarta - Kebayoran Baru'].map(c => `
                                     <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.cabang === c ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
                                         <input type="radio" name="cabang" value="${c}" ${state.bookingDetails.cabang === c ? 'checked' : ''} onchange="state.bookingDetails.cabang = this.value" class="text-brand-600">
                                         <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${c}</span>
