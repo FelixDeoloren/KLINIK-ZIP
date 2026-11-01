@@ -75,12 +75,9 @@
                 </div>
             </div>
 
-            <!-- Desktop Nav Items -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold">
-                <button onclick="navigateTo('beranda')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Beranda</button>
-                <button onclick="navigateTo('katalog')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Katalog Treatment</button>
-                <button onclick="requireAuthAndNavigate('riwayat')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Riwayat Booking</button>
-                <a href="#lokasi" onclick="if(state.currentStage!=='beranda') { navigateTo('beranda'); setTimeout(()=>document.getElementById('lokasi')?.scrollIntoView(), 100); } else { document.getElementById('lokasi')?.scrollIntoView({behavior: 'smooth'}); }" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Lokasi Cabang</a>
+            <!-- Dynamic Nav Items per Role -->
+            <nav class="hidden md:flex items-center space-x-6 text-xs sm:text-sm font-semibold" id="mainNavContainer">
+                <!-- Rendered dynamically via JS -->
             </nav>
 
             <!-- Actions Right -->
@@ -91,24 +88,17 @@
                     <i class="fas fa-sun hidden dark:block text-amber-400 text-sm"></i>
                 </button>
 
-                <!-- Cart Icon -->
-                <button onclick="requireAuthAndNavigate('keranjang')" class="relative p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                    <i class="fas fa-shopping-bag text-base sm:text-lg"></i>
-                    <span id="cartCountBadge" class="hidden absolute -top-1.5 -right-1.5 bg-brand-600 text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">0</span>
-                </button>
+                <!-- Cart Button Container (Pasien Only) -->
+                <div id="cartButtonContainer"></div>
 
                 <!-- Dynamic Auth Section -->
-                <div id="authHeaderContainer">
-                    <!-- Rendered by JS -->
-                </div>
+                <div id="authHeaderContainer"></div>
             </div>
         </div>
     </header>
 
     <!-- Main Dynamic Container -->
-    <main id="appContainer" class="flex-grow">
-        <!-- Stages will be dynamically rendered here -->
-    </main>
+    <main id="appContainer" class="flex-grow"></main>
 
     <!-- WhatsApp Floating CTA -->
     <a href="https://wa.me/6281234567890?text=Halo%20Klinik%20ZIP,%20saya%20ingin%20konsultasi%20mengenai%20treatment" target="_blank" class="fixed bottom-5 right-5 z-40 bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 sm:p-4 rounded-full shadow-2xl flex items-center space-x-2.5 transition-all duration-300 hover:scale-105 group">
@@ -125,11 +115,6 @@
                     <span class="text-xl font-bold text-white tracking-tight">KLINIK ZIP</span>
                 </div>
                 <p class="text-xs sm:text-sm leading-relaxed text-slate-400">Pionir perawatan kecantikan kulit berbasis teknologi laser dan perawatan medis profesional terpercaya di Indonesia.</p>
-                <div class="flex space-x-3 pt-1">
-                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-instagram text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-tiktok text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:bg-brand-600 hover:text-white transition-colors"><i class="fab fa-youtube text-xs"></i></a>
-                </div>
             </div>
 
             <div>
@@ -137,7 +122,7 @@
                 <ul class="space-y-2 text-xs sm:text-sm">
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Cryo Fat Freezing Slimming</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Underarm Super Hair Removal</a></li>
-                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">IPL Rejuvenation Therapy</a></li>
+                    <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Laser Rejuvenation Therapy</a></li>
                     <li><a href="#" onclick="navigateTo('katalog')" class="hover:text-brand-400 transition-colors">Acne Light Therapy (IPL)</a></li>
                 </ul>
             </div>
@@ -185,7 +170,15 @@
             fallback: "https://placehold.co/600x400/059669/ffffff?text=Klinik+ZIP+Treatment"
         };
 
-        const TREATMENTS_DATA = [
+        // Database Akun Terdaftar
+        let REGISTERED_USERS = [
+            { email: "pasien@zip.id", password: "12345678", name: "Pasien Demo", phone: "082298346250", role: "pasien" },
+            { email: "admin@zip.id", password: "adminpassword", name: "Admin Utama", phone: "08123456789", role: "admin" },
+            { email: "dokter@zip.id", password: "dokterpassword", name: "dr. Anita Rahma", phone: "08123456788", role: "dokter" },
+            { email: "cs@zip.id", password: "cspassword", name: "Customer Service", phone: "08123456787", role: "cs" }
+        ];
+
+        let TREATMENTS_DATA = [
             {
                 id: 1,
                 name: 'Laser Rejuvenation Therapy',
@@ -255,51 +248,39 @@
                     "Mengontrol produksi minyak/sebum berlebih",
                     "Menyamarkan noda bekas jerawat merah"
                 ]
-            },
-            {
-                id: 5,
-                name: "Vitamin C & Glutathione Glowing Drip",
-                category: "Body & Drips",
-                price: 399000,
-                originalPrice: 600000,
-                rating: 4.7,
-                reviews: 145,
-                duration: "30 Menit",
-                image: IMAGES.treatments.vitDrip,
-                badge: "",
-                description: "Infus nutrisi antioksidan konsentrasi tinggi untuk mencerahkan seluruh kulit tubuh dari dalam, meningkatkan imunitas, dan menangkal radikal bebas.",
-                benefits: ["Mencerahkan seluruh kulit tubuh", "Meningkatkan daya tahan tubuh", "Anti-aging menyeluruh"]
-            },
-            {
-                id: 6,
-                name: "ZIP-Weightloss Body Sculpting",
-                category: "Body & Drips",
-                price: 899000,
-                originalPrice: 1200000,
-                rating: 4.8,
-                reviews: 98,
-                duration: "60 Menit",
-                image: IMAGES.treatments.bodySlim,
-                badge: "POPULAR",
-                description: "Perawatan penghancur lemak membandel dengan kombinasi Radio Frequency & Cavitation medis untuk membentuk lekuk tubuh ideal.",
-                benefits: ["Menghancurkan sel lemak lokal", "Mengencangkan kulit kendur", "Mempercepat metabolisme jaringan"]
             }
+        ];
+
+        let LOCATIONS_DATA = [
+            { kota: 'MEDAN', nama: 'ZIP Clinic - Deli Park Medan', alamat: 'Deli Park Mall LG Fl. Jl. Putri Hijau', jam: '10.00 - 20.00', rating: 4.9, mapUrl: 'https://maps.google.com/?q=Deli+Park+Mall+Medan' },
+            { kota: 'MEDAN', nama: 'ZIP Clinic Sun Plaza Medan', alamat: 'Sun Plaza Lv. 3 Unit C15-16', jam: '10.00 - 20.00', rating: 4.8, mapUrl: 'https://maps.google.com/?q=Sun+Plaza+Medan' },
+            { kota: 'MEDAN', nama: 'ZIP Clinic Pattimura Medan', alamat: 'Jl. Kapten Pattimura No.137', jam: '09.00 - 20.00', rating: 4.9, mapUrl: 'https://maps.google.com/?q=Jl+Kapten+Pattimura+Medan' },
+            { kota: 'JAKARTA', nama: 'ZIP Clinic Kebayoran Baru', alamat: 'Jl. Wolter Monginsidi No.54', jam: '09.00 - 20.00', rating: 4.8, mapUrl: 'https://maps.google.com/?q=Jl+Wolter+Monginsidi+Kebayoran+Baru' }
+        ];
+
+        let DOCTORS_DATA = [
+            { id: 1, name: 'dr. Anita Rahma, Sp.D.V.E', spec: 'Spesialis Dermatologi & Venereologi', exp: '10 Tahun Pengalaman', avatar: 'https://images.unsplash.com/photo-1594824813566-78a9c37ed524?auto=format&fit=crop&w=400&q=80', cabang: 'ZIP Clinic - Deli Park Medan', jadwal: 'Senin - Jumat (10.00 - 17.00 WIB)' },
+            { id: 2, name: 'dr. Budi Santoso, Sp.D.V.E', spec: 'Spesialis Laser & Aesthetic Medicine', exp: '8 Tahun Pengalaman', avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80', cabang: 'ZIP Clinic Sun Plaza Medan', jadwal: 'Selasa - Sabtu (11.00 - 19.00 WIB)' },
+            { id: 3, name: 'Clara Devina, Dip.AAAM', spec: 'Senior Beautician & Skin Expert', exp: '6 Tahun Pengalaman Estetika', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80', cabang: 'ZIP Clinic Pattimura Medan', jadwal: 'Senin - Minggu (09.00 - 18.00 WIB)' }
         ];
 
         let state = {
             currentStage: 'beranda',
             isLoggedIn: false,
+            userRole: 'pasien',
             userProfile: null,
             pendingAction: null,
             cart: [],
             selectedTreatment: TREATMENTS_DATA[0],
+            justRegisteredAccount: null, // Menyimpan credential akun baru terdaftar untuk pemberitahuan di login
             bookingDetails: {
-                step: 1,
                 cabang: 'ZIP Clinic - Deli Park Medan',
                 dokter: 'dr. Anita Rahma, Sp.D.V.E',
                 tanggal: '2026-10-25',
                 jam: '10:00',
-                nama: '',
+                namaDepan: '',
+                namaBelakang: '',
+                email: '',
                 phone: '',
                 catatan: '',
                 metodePembayaran: 'QRIS Instan',
@@ -314,21 +295,11 @@
                     jam: "14:00",
                     cabang: "ZIP Clinic - Deli Park Medan",
                     dokter: "dr. Anita Rahma, Sp.D.V.E",
+                    pasienNama: "Pasien Demo",
                     treatments: ["Cryo Fat Freezing Slimming"],
                     total: 599000,
                     status: "Selesai",
-                    itemsCount: 1
-                },
-                {
-                    id: "ZIP-74821",
-                    tanggal: "2026-10-26",
-                    jam: "10:00",
-                    cabang: "ZIP Clinic Sun Plaza Medan",
-                    dokter: "dr. Budi Santoso, Sp.D.V.E",
-                    treatments: ["Laser Rejuvenation Therapy", "Underarm Super Hair Removal (SHR)"],
-                    total: 2049000,
-                    status: "Berlangsung",
-                    itemsCount: 2
+                    catatanDokter: "Kondisi kulit membaik setelah 1x sesi. Disarankan hidrasi cukup."
                 }
             ],
             heroIndex: 0,
@@ -337,6 +308,7 @@
         };
 
         window.onload = function() {
+            renderHeaderNav();
             renderHeaderAuth();
             renderApp();
             setInterval(() => {
@@ -377,7 +349,7 @@
                 callbackAction();
             } else {
                 state.pendingAction = callbackAction;
-                showToast("Silakan login/daftar terlebih dahulu.", "auth");
+                showToast("Silakan login/daftar akun terlebih dahulu.", "auth");
                 navigateTo('login');
             }
         }
@@ -394,20 +366,57 @@
         function navigateTo(stage) {
             state.currentStage = stage;
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderHeaderNav();
             renderApp();
             updateCartBadge();
         }
 
         function updateCartBadge() {
-            const badge = document.getElementById('cartCountBadge');
-            if (badge) {
+            const container = document.getElementById('cartButtonContainer');
+            if (!container) return;
+
+            if (state.userRole === 'pasien') {
                 const total = state.cart.reduce((acc, item) => acc + item.qty, 0);
-                if (total > 0) {
-                    badge.textContent = total;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
+                container.innerHTML = `
+                    <button onclick="requireAuthAndNavigate('bookingForm')" class="relative p-2 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fas fa-shopping-bag text-base sm:text-lg"></i>
+                        <span id="cartCountBadge" class="${total > 0 ? '' : 'hidden'} absolute -top-1.5 -right-1.5 bg-brand-600 text-white text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900">${total}</span>
+                    </button>
+                `;
+            } else {
+                container.innerHTML = '';
+            }
+        }
+
+        function renderHeaderNav() {
+            const container = document.getElementById('mainNavContainer');
+            if (!container) return;
+
+            if (!state.isLoggedIn || state.userRole === 'pasien') {
+                container.innerHTML = `
+                    <button onclick="navigateTo('beranda')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Beranda</button>
+                    <button onclick="navigateTo('katalog')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Katalog Treatment</button>
+                    <button onclick="navigateTo('lokasiCabang')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Lokasi Cabang</button>
+                    <button onclick="navigateTo('dokterList')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Dokter & Beautician</button>
+                    <button onclick="requireAuthAndNavigate('riwayat')" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Riwayat Booking</button>
+                `;
+            } else if (state.userRole === 'admin') {
+                container.innerHTML = `
+                    <button onclick="navigateTo('adminDashboard')" class="text-brand-600 font-bold">Dashboard Admin</button>
+                    <button onclick="navigateTo('adminTreatment')" class="hover:text-brand-600">CRUD Treatment</button>
+                    <button onclick="navigateTo('adminDokter')" class="hover:text-brand-600">CRUD Dokter</button>
+                    <button onclick="navigateTo('adminReservasi')" class="hover:text-brand-600">Kelola Reservasi</button>
+                `;
+            } else if (state.userRole === 'dokter') {
+                container.innerHTML = `
+                    <button onclick="navigateTo('dokterJadwal')" class="text-brand-600 font-bold">Jadwal Praktik</button>
+                    <button onclick="navigateTo('dokterReservasi')" class="hover:text-brand-600">Daftar Reservasi Pasien</button>
+                `;
+            } else if (state.userRole === 'cs') {
+                container.innerHTML = `
+                    <button onclick="navigateTo('katalog')" class="text-brand-600 font-bold">Info Treatment & Promo</button>
+                    <button onclick="navigateTo('adminReservasi')" class="hover:text-brand-600">Jadwal & Pembatalan Pasien</button>
+                `;
             }
         }
 
@@ -418,12 +427,12 @@
             if (state.isLoggedIn) {
                 container.innerHTML = `
                     <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 p-1 pl-2.5 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <div class="flex items-center space-x-1.5">
-                            <div class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-[10px] shadow">
-                                ${state.userProfile.name.charAt(0).toUpperCase()}
+                        <button onclick="navigateTo('profilPasien')" class="flex items-center space-x-1.5 hover:opacity-80">
+                            <div class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-[10px] shadow overflow-hidden">
+                                ${state.userProfile.photo ? `<img src="${state.userProfile.photo}" class="w-full h-full object-cover">` : state.userProfile.name.charAt(0).toUpperCase()}
                             </div>
                             <span class="text-xs font-bold hidden sm:inline text-slate-700 dark:text-slate-200">${state.userProfile.name.split(' ')[0]}</span>
-                        </div>
+                        </button>
                         <button onclick="handleLogout()" class="text-xs px-2 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg hover:bg-rose-500 hover:text-white transition-colors" title="Keluar">
                             <i class="fas fa-sign-out-alt"></i>
                         </button>
@@ -431,28 +440,58 @@
                 `;
             } else {
                 container.innerHTML = `
-                    <button onclick="navigateTo('login')" class="px-3.5 sm:px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-600/30 transition-all">
-                        Masuk
-                    </button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="navigateTo('login')" class="px-3 py-2 text-brand-600 dark:text-brand-400 font-bold text-xs hover:underline">Masuk</button>
+                        <button onclick="navigateTo('register')" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-md shadow-brand-600/30 transition-all">Daftar Akun</button>
+                    </div>
                 `;
             }
         }
 
+        // --- FITUR LOGIN (Dengan Pengecekan Data & Validasi Kosong/Salah) ---
         function handleLoginSubmit(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail')?.value || "pasien@zip.id";
-            const rawName = email.split('@')[0];
-            const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            const emailInput = document.getElementById('loginEmail')?.value.trim();
+            const passInput = document.getElementById('loginPassword')?.value.trim();
 
+            // Peringatan jika email atau password kosong
+            if (!emailInput || !passInput) {
+                showToast("Peringatan: Harap isi email dan kata sandi dengan lengkap.", "warning");
+                return;
+            }
+
+            // Cari user di database terdaftar
+            const foundUser = REGISTERED_USERS.find(u => u.email.toLowerCase() === emailInput.toLowerCase());
+
+            if (!foundUser) {
+                showToast("Login ditolak: Akun dengan email tersebut belum terdaftar.", "warning");
+                return;
+            }
+
+            // Cek kebenaran password
+            if (foundUser.password !== passInput) {
+                showToast("Password salah! Silakan periksa kembali kata sandi Anda.", "warning");
+                return;
+            }
+
+            // Reset pemberitahuan akun baru setelah login berhasil
+            state.justRegisteredAccount = null;
+
+            // Login Berhasil
             state.isLoggedIn = true;
-            state.userProfile = { name: formattedName, email: email, phone: "08123456789" };
-            state.bookingDetails.nama = state.userProfile.name;
-            state.bookingDetails.phone = state.userProfile.phone;
+            state.userRole = foundUser.role;
+            state.userProfile = { name: foundUser.name, email: foundUser.email, phone: foundUser.phone, photo: "" };
+            state.bookingDetails.namaDepan = foundUser.name;
+            state.bookingDetails.email = foundUser.email;
+            state.bookingDetails.phone = foundUser.phone;
 
             renderHeaderAuth();
-            showToast(`Selamat datang, ${state.userProfile.name}!`, "success");
+            renderHeaderNav();
+            showToast(`Selamat datang kembali, ${foundUser.name}!`, "success");
 
-            if (state.pendingAction) {
+            if (foundUser.role === 'admin') navigateTo('adminDashboard');
+            else if (foundUser.role === 'dokter') navigateTo('dokterJadwal');
+            else if (state.pendingAction) {
                 const action = state.pendingAction;
                 state.pendingAction = null;
                 action();
@@ -461,11 +500,46 @@
             }
         }
 
+        // --- FITUR REGISTRASI (Setelah daftar, simpan & ke halaman login + pemberitahuan) ---
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName')?.value.trim();
+            const email = document.getElementById('regEmail')?.value.trim();
+            const phone = document.getElementById('regPhone')?.value.trim();
+            const password = document.getElementById('regPassword')?.value.trim();
+
+            if (!name || !email || !phone || !password) {
+                showToast("Peringatan: Semua data wajib diisi!", "warning");
+                return;
+            }
+
+            // Cek apakah email sudah terdaftar
+            const existing = REGISTERED_USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
+            if (existing) {
+                showToast("Pendaftaran ditolak: Email sudah terdaftar.", "warning");
+                return;
+            }
+
+            // Simpan akun baru ke database
+            const newPatient = { email, password, name, phone, role: "pasien" };
+            REGISTERED_USERS.push(newPatient);
+
+            // Simpan info akun baru untuk ditampilkan di form login
+            state.justRegisteredAccount = { email, password, name };
+
+            showToast(`Akun berhasil dibuat! Silakan masuk dengan email & kata sandi Anda.`, "success");
+            
+            // Arahkan ke halaman login
+            navigateTo('login');
+        }
+
         function handleLogout() {
             state.isLoggedIn = false;
+            state.userRole = 'pasien';
             state.userProfile = null;
             state.cart = [];
             renderHeaderAuth();
+            renderHeaderNav();
             showToast("Anda telah keluar akun.", "info");
             navigateTo('beranda');
         }
@@ -479,26 +553,12 @@
             });
         }
 
-        function updateCartQty(id, delta) {
-            const item = state.cart.find(i => i.id === id);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) { state.cart = state.cart.filter(i => i.id !== id); }
-                updateCartBadge();
-                renderApp();
-            }
-        }
-
         function applyVoucher() {
             const code = document.getElementById('voucherInput')?.value.toUpperCase();
             if (code === 'ZIPNEW10') {
                 state.bookingDetails.discount = 0.10;
                 state.bookingDetails.voucherCode = code;
                 showToast("Voucher Diskon 10% Dipasang!", "success");
-            } else if (code === 'GLOWFEST20') {
-                state.bookingDetails.discount = 0.20;
-                state.bookingDetails.voucherCode = code;
-                showToast("Voucher Diskon 20% Dipasang!", "success");
             } else {
                 showToast("Kode voucher tidak valid", "warning");
             }
@@ -509,6 +569,33 @@
             return "Rp " + new Intl.NumberFormat('id-ID').format(num);
         }
 
+        function batalkanReservasi(id) {
+            const booking = state.bookingHistory.find(b => b.id === id);
+            if (booking) {
+                booking.status = "Dibatalkan";
+                showToast(`Reservasi ${id} telah dibatalkan.`, "info");
+                renderApp();
+            }
+        }
+
+        function updateStatusReservasi(id, statusBaru) {
+            const booking = state.bookingHistory.find(b => b.id === id);
+            if (booking) {
+                booking.status = statusBaru;
+                showToast(`Status ${id} diubah menjadi ${statusBaru}.`, "success");
+                renderApp();
+            }
+        }
+
+        function simpanCatatanDokter(id) {
+            const txt = document.getElementById(`catatanDokter_${id}`)?.value;
+            const booking = state.bookingHistory.find(b => b.id === id);
+            if (booking) {
+                booking.catatanDokter = txt;
+                showToast(`Catatan medis ${id} tersimpan!`, "success");
+            }
+        }
+
         function renderApp() {
             const container = document.getElementById('appContainer');
             if (!container) return;
@@ -516,16 +603,28 @@
             switch(state.currentStage) {
                 case 'beranda': container.innerHTML = renderStageBeranda(); break;
                 case 'login': container.innerHTML = renderStageLogin(); break;
+                case 'register': container.innerHTML = renderStageRegister(); break;
                 case 'katalog': container.innerHTML = renderStageKatalog(); break;
                 case 'detail': container.innerHTML = renderStageDetail(); break;
-                case 'keranjang': container.innerHTML = renderStageKeranjang(); break;
+                case 'lokasiCabang': container.innerHTML = renderStageLokasiCabang(); break;
+                case 'dokterList': container.innerHTML = renderStageDokterList(); break;
                 case 'bookingForm': container.innerHTML = renderStageBookingForm(); break;
                 case 'bookingSukses': container.innerHTML = renderStageBookingSukses(); break;
                 case 'riwayat': container.innerHTML = renderStageRiwayat(); break;
+                case 'profilPasien': container.innerHTML = renderStageProfilPasien(); break;
+                // Area Admin
+                case 'adminDashboard': container.innerHTML = renderStageAdminDashboard(); break;
+                case 'adminTreatment': container.innerHTML = renderStageAdminTreatment(); break;
+                case 'adminDokter': container.innerHTML = renderStageAdminDokter(); break;
+                case 'adminReservasi': container.innerHTML = renderStageAdminReservasi(); break;
+                // Area Dokter
+                case 'dokterJadwal': container.innerHTML = renderStageDokterJadwal(); break;
+                case 'dokterReservasi': container.innerHTML = renderStageDokterReservasi(); break;
                 default: container.innerHTML = renderStageBeranda();
             }
         }
 
+        // --- BERANDA PASIEN ---
         function renderStageBeranda() {
             return `
                 <div class="relative bg-slate-900 text-white overflow-hidden min-h-[440px] sm:min-h-[500px] flex items-center">
@@ -558,7 +657,7 @@
                 </div>
 
                 <!-- Promo Banner -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-10 relative z-20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 relative z-20">
                     <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-emerald-400/20">
                         <div class="flex items-center space-x-4">
                             <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-xl flex-shrink-0 backdrop-blur-md">
@@ -575,9 +674,9 @@
                     </div>
                 </div>
 
-                <!-- Feature Treatments -->
-                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-2">
+                <!-- Perawatan Favorit -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-2">
                         <div>
                             <span class="text-brand-600 dark:text-brand-400 font-bold text-[11px] sm:text-xs uppercase tracking-widest">Paling Populer</span>
                             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-0.5">Perawatan Favorit Pasien</h2>
@@ -588,7 +687,7 @@
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         ${TREATMENTS_DATA.slice(0, 3).map(item => `
                             <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-md hover:shadow-xl transition-all flex flex-col group">
                                 <div class="relative overflow-hidden h-48 sm:h-52">
@@ -599,7 +698,7 @@
                                         <span>${item.duration}</span>
                                     </span>
                                 </div>
-                                <div class="p-5 sm:p-6 flex-grow flex flex-col justify-between space-y-4">
+                                <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
                                     <div>
                                         <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1.5">
                                             <span>${item.category}</span>
@@ -631,106 +730,173 @@
                     </div>
                 </section>
 
-                <!-- Location & Facilities Section -->
-                <section id="lokasi" class="bg-slate-100 dark:bg-slate-800/50 py-14 sm:py-20 border-y border-slate-200 dark:border-slate-800">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center mb-12 sm:mb-16">
-                            <div class="space-y-4 sm:space-y-6">
-                                <span class="text-brand-600 dark:text-brand-400 font-bold text-[11px] sm:text-xs uppercase tracking-widest">Klinik Standar Internasional</span>
-                                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Fasilitas Modern & Dokter Spesialis</h2>
-                                <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-xs sm:text-base">
-                                    Klinik ZIP menghadirkan suasana ruangan steril, mewah, serta peralatan laser medis berstandar tinggi dari Eropa & Amerika.
-                                </p>
-                                <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
-                                    <div class="p-3.5 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                        <div class="text-xl sm:text-2xl font-black text-brand-600">100%</div>
-                                        <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Dokter Certified</div>
+                <!-- Informasi Lokasi Cabang -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="flex justify-between items-center mb-8">
+                        <div>
+                            <span class="text-brand-600 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Jaringan Outlet</span>
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Lokasi Cabang ZIP Clinic</h2>
+                        </div>
+                        <button onclick="navigateTo('lokasiCabang')" class="text-brand-600 font-bold text-xs hover:underline">Lihat Peta & Detail Lengkap &rarr;</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        ${LOCATIONS_DATA.map(c => `
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between space-y-3">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-[9px] font-extrabold bg-brand-500/10 text-brand-600 px-2 py-0.5 rounded">${c.kota}</span>
+                                        <div class="flex items-center text-amber-400 text-xs font-bold">
+                                            <i class="fas fa-star mr-1 text-[10px]"></i><span>${c.rating}</span>
+                                        </div>
                                     </div>
-                                    <div class="p-3.5 sm:p-4 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                        <div class="text-xl sm:text-2xl font-black text-brand-600">50.000+</div>
-                                        <div class="text-[11px] text-slate-500 font-semibold mt-0.5">Pasien Puas</div>
-                                    </div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${c.nama}</h4>
+                                    <p class="text-xs text-slate-500 mt-1">${c.alamat}</p>
+                                </div>
+                                <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-[11px]">
+                                    <span class="text-slate-400"><i class="far fa-clock mr-1 text-brand-500"></i>${c.jam}</span>
+                                    <a href="${c.mapUrl}" target="_blank" class="text-brand-600 font-bold hover:underline">Buka Peta</a>
                                 </div>
                             </div>
-                            <div class="relative">
-                                <img src="${IMAGES.clinic}" onerror="this.src='${IMAGES.fallback}'" class="rounded-2xl sm:rounded-3xl shadow-xl w-full h-[280px] sm:h-[360px] object-cover border-4 border-white dark:border-slate-700" alt="Interior">
-                            </div>
-                        </div>
-
-                        <!-- Branches Outlet -->
-                        <div class="pt-6 border-t border-slate-200 dark:border-slate-700">
-                            <div class="text-center max-w-xl mx-auto mb-8">
-                                <span class="text-brand-600 font-bold text-[11px] uppercase tracking-widest">Jaringan Outlet</span>
-                                <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Cabang ZIP Clinic</h3>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                                ${[
-                                    {city: 'Medan', name: 'ZIP Clinic - Deli Park Medan', addr: 'DeliPark Mall LGM-35A, Jl. Putri Hijau', time: '10.00 - 20.00'},
-                                    {city: 'Medan', name: 'ZIP Clinic Sun Plaza Medan', addr: 'Sun Plaza Lt. 1 Unit C15-16', time: '10.00 - 21.00'},
-                                    {city: 'Medan', name: 'ZIP Clinic Pattimura Medan', addr: 'Jl. Kapten Patimura No.137', time: '09.00 - 20.00'},
-                                    {city: 'Jakarta', name: 'ZIP Clinic Kebayoran Baru', addr: 'Jl. Wolter Monginsidi No.14', time: '09.00 - 20.00'}
-                                ].map(b => `
-                                    <div class="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-                                        <div>
-                                            <div class="flex items-center justify-between mb-2">
-                                                <span class="text-[10px] font-bold text-brand-600 uppercase">${b.city}</span>
-                                                <span class="text-[9px] font-semibold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">Buka</span>
-                                            </div>
-                                            <h4 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${b.name}</h4>
-                                            <p class="text-[11px] text-slate-500 mt-1">${b.addr}</p>
-                                        </div>
-                                        <div class="mt-4 pt-2.5 border-t border-slate-100 dark:border-slate-700 text-[11px] text-slate-400 flex justify-between items-center">
-                                            <span><i class="fas fa-clock mr-1"></i>${b.time}</span>
-                                            <span class="text-amber-400 font-bold"><i class="fas fa-star text-[9px]"></i> 4.9</span>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
+                        `).join('')}
                     </div>
                 </section>
             `;
         }
 
+        // --- HALAMAN LOGIN (Otomatis menampilkan notifikasi & autofill akun baru terdaftar) ---
         function renderStageLogin() {
+            const hasNewAccount = state.justRegisteredAccount !== null;
+            const autoEmail = hasNewAccount ? state.justRegisteredAccount.email : '';
+            const autoPass = hasNewAccount ? state.justRegisteredAccount.password : '';
+
             return `
                 <div class="max-w-md mx-auto my-10 sm:my-16 px-4">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700">
-                        <div class="text-center mb-6 sm:mb-8">
-                            <div class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3 shadow-lg shadow-brand-600/30">
-                                Z
-                            </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700 space-y-5">
+                        
+                        <div class="text-center">
+                            <div class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3 shadow-lg shadow-brand-600/30">Z</div>
                             <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Masuk ke Account ZIP</h2>
-                            <p class="text-xs text-slate-500 mt-1">Login untuk booking treatment & melihat riwayat pesanan.</p>
+                            <p class="text-xs text-slate-500 mt-1">Masukkan email dan kata sandi terdaftar Anda.</p>
                         </div>
+
+                        ${hasNewAccount ? `
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-2xl text-xs space-y-1 text-emerald-800 dark:text-emerald-200">
+                                <div class="font-bold flex items-center space-x-1.5">
+                                    <i class="fas fa-check-circle text-emerald-600"></i>
+                                    <span>Akun Baru Berhasil Didaftarkan!</span>
+                                </div>
+                                <p class="text-[11px] text-emerald-700 dark:text-emerald-300">Silakan lakukan login dengan data yang tadi Anda daftarkan:</p>
+                                <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700 font-mono text-[11px] space-y-0.5 mt-1">
+                                    <div><strong>Email:</strong> ${autoEmail}</div>
+                                    <div><strong>Kata Sandi:</strong> ${autoPass}</div>
+                                </div>
+                            </div>
+                        ` : ''}
 
                         <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Email / No. WhatsApp</label>
-                                <div class="relative">
-                                    <i class="fas fa-envelope absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                                    <input type="email" id="loginEmail" required placeholder="pasien@gmail.com" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 dark:text-white">
-                                </div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Alamat Email *</label>
+                                <input type="email" id="loginEmail" value="${autoEmail}" placeholder="pasien@zip.id" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                             </div>
 
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kata Sandi</label>
-                                <div class="relative">
-                                    <i class="fas fa-lock absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-                                    <input type="password" required value="12345678" placeholder="••••••••" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 dark:text-white">
-                                </div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kata Sandi (Password) *</label>
+                                <input type="password" id="loginPassword" value="${autoPass}" placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
                             </div>
 
                             <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md text-xs transition-all mt-2">
                                 Masuk Sekarang
                             </button>
                         </form>
+
+                        <div class="text-center text-xs text-slate-500 pt-2">
+                            Belum punya akun? <button onclick="navigateTo('register')" class="text-brand-600 font-bold hover:underline">Daftar Akun Baru</button>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
+        // --- HALAMAN REGISTRASI PASIEN BARU ---
+        function renderStageRegister() {
+            return `
+                <div class="max-w-md mx-auto my-10 sm:my-16 px-4">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700">
+                        <div class="text-center mb-6">
+                            <div class="w-14 h-14 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3 shadow-lg shadow-brand-600/30">Z</div>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Pendaftaran Akun Pasien Baru</h2>
+                            <p class="text-xs text-slate-500 mt-1">Lengkapi data untuk membuat akun Klinik ZIP Anda.</p>
+                        </div>
+
+                        <form onsubmit="handleRegisterSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nama Lengkap *</label>
+                                <input type="text" id="regName" placeholder="Nama Pasien" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Alamat Email *</label>
+                                <input type="email" id="regEmail" placeholder="pasien@gmail.com" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Nomor Telepon / WhatsApp *</label>
+                                <input type="tel" id="regPhone" placeholder="08123456789" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">Kata Sandi (Password) *</label>
+                                <input type="password" id="regPassword" placeholder="Buat Kata Sandi" class="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md text-xs transition-all mt-2">
+                                Daftar Akun Baru
+                            </button>
+                        </form>
+
+                        <div class="mt-6 text-center text-xs text-slate-500">
+                            Sudah punya akun? <button onclick="navigateTo('login')" class="text-brand-600 font-bold hover:underline">Masuk disini</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- HALAMAN LOKASI CABANG KLINIK ---
+        function renderStageLokasiCabang() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="mb-8">
+                        <span class="text-brand-600 font-bold text-xs uppercase tracking-widest">Outlet Resmi</span>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">Informasi Lokasi Cabang Klinik ZIP</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Kunjungi cabang terdekat kami untuk mendapatkan layanan estetik & laser terbaik.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        ${LOCATIONS_DATA.map(c => `
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md flex flex-col justify-between space-y-4">
+                                <div>
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-[10px] font-extrabold bg-brand-500/10 text-brand-600 px-3 py-1 rounded-full">${c.kota}</span>
+                                        <div class="flex items-center text-amber-400 text-xs font-bold">
+                                            <i class="fas fa-star mr-1"></i><span>${c.rating} / 5.0</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">${c.nama}</h3>
+                                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2"><i class="fas fa-map-marker-alt text-brand-500 mr-2"></i>${c.alamat}</p>
+                                </div>
+                                <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs">
+                                    <span class="text-slate-500"><i class="far fa-clock mr-1 text-brand-500"></i>Buka: ${c.jam} WIB</span>
+                                    <a href="${c.mapUrl}" target="_blank" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow transition-colors">
+                                        <i class="fas fa-directions mr-1"></i> Buka Google Maps
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- KATALOG TREATMENT ---
         function renderStageKatalog() {
             const categories = ['Semua', 'Facial & Laser', 'Hair Removal', 'Body & Drips'];
             let filtered = TREATMENTS_DATA.filter(item => {
@@ -744,8 +910,8 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                         <div>
-                            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Katalog Perawatan</h1>
-                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pilih treatment estetika terbaik sesuai kebutuhan kulit Anda.</p>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Katalog Informasi Treatment</h1>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Lihat daftar lengkap treatment, deskripsi, durasi, harga, dan manfaatnya.</p>
                         </div>
                         <div class="relative w-full md:w-72">
                             <i class="fas fa-search absolute left-3.5 top-3 text-slate-400 text-xs"></i>
@@ -753,7 +919,6 @@
                         </div>
                     </div>
 
-                    <!-- Category Pills -->
                     <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-6 custom-scrollbar">
                         ${categories.map(cat => `
                             <button onclick="state.activeCategory = '${cat}'; renderApp();" class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${state.activeCategory === cat ? 'bg-brand-600 text-white shadow' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'}">
@@ -762,7 +927,6 @@
                         `).join('')}
                     </div>
 
-                    <!-- Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         ${filtered.length > 0 ? filtered.map(item => `
                             <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-md hover:shadow-xl transition-all flex flex-col group">
@@ -792,7 +956,7 @@
                                                 <i class="fas fa-cart-plus text-xs"></i>
                                             </button>
                                             <button onclick="requireAuthAndNavigate('detail', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-xs shadow">
-                                                Booking
+                                                Detail & Manfaat
                                             </button>
                                         </div>
                                     </div>
@@ -800,7 +964,6 @@
                             </div>
                         `).join('') : `
                             <div class="col-span-full text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300">
-                                <i class="fas fa-search text-3xl text-slate-300 mb-2"></i>
                                 <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300">Treatment tidak ditemukan</h3>
                             </div>
                         `}
@@ -821,29 +984,20 @@
                     <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 md:grid-cols-2">
                         <div class="relative h-64 md:h-full">
                             <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-full h-full object-cover" alt="${item.name}">
-                            <span class="absolute top-3 left-3 bg-brand-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-full shadow">
-                                ${item.category}
-                            </span>
                         </div>
 
                         <div class="p-6 sm:p-8 flex flex-col justify-between space-y-5">
                             <div>
                                 <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-                                    <div class="flex items-center text-amber-400 font-bold">
-                                        <i class="fas fa-star mr-1"></i>
-                                        <span>${item.rating} (${item.reviews} Ulasan)</span>
-                                    </div>
-                                    <span class="flex items-center space-x-1 font-semibold">
-                                        <i class="fas fa-clock text-slate-400 text-[10px]"></i>
-                                        <span>${item.duration}</span>
-                                    </span>
+                                    <span class="font-bold text-brand-600">${item.category}</span>
+                                    <span class="font-semibold"><i class="fas fa-clock text-slate-400 mr-1"></i>${item.duration}</span>
                                 </div>
 
                                 <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2.5">${item.name}</h1>
                                 <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">${item.description}</p>
 
                                 <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-700/50">
-                                    <h4 class="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-wider">Manfaat Perawatan:</h4>
+                                    <h4 class="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-wider">Manfaat Utama:</h4>
                                     <ul class="space-y-1.5">
                                         ${item.benefits.map(b => `
                                             <li class="flex items-center space-x-2 text-[11px] text-slate-600 dark:text-slate-300">
@@ -861,14 +1015,9 @@
                                     <span class="text-lg sm:text-xl font-black text-brand-600 dark:text-brand-400">${formatRupiah(item.price)}</span>
                                 </div>
 
-                                <div class="flex space-x-2">
-                                    <button onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-800 dark:text-white font-bold rounded-xl text-xs transition-colors">
-                                        <i class="fas fa-cart-plus"></i>
-                                    </button>
-                                    <button onclick="requireAuthAndNavigate('bookingForm', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md">
-                                        Booking
-                                    </button>
-                                </div>
+                                <button onclick="requireAuthAndNavigate('bookingForm', ${JSON.stringify(item).replace(/"/g, '&quot;')})" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md">
+                                    Reservasi Sekarang
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -876,60 +1025,176 @@
             `;
         }
 
-        function renderStageKeranjang() {
-            const subtotal = state.cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+        // --- DOKTER & BEAUTICIAN LIST ---
+        function renderStageDokterList() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="mb-8">
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Dokter & Beautician Medis</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Tim dokter spesialis dermatology dan beautician bersertifikasi profesional Klinik ZIP.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${DOCTORS_DATA.map(doc => `
+                            <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200 dark:border-slate-700 shadow-md flex flex-col justify-between space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <img src="${doc.avatar}" class="w-16 h-16 rounded-2xl object-cover shadow" alt="${doc.name}">
+                                    <div>
+                                        <h3 class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">${doc.name}</h3>
+                                        <p class="text-xs text-brand-600 font-bold mt-0.5">${doc.spec}</p>
+                                        <span class="text-[10px] text-slate-400 block">${doc.exp}</span>
+                                    </div>
+                                </div>
+
+                                <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl text-xs space-y-1">
+                                    <div class="font-bold text-slate-700 dark:text-slate-300"><i class="fas fa-building text-brand-500 mr-1.5"></i>${doc.cabang}</div>
+                                    <div class="text-slate-500 text-[11px]"><i class="far fa-clock text-amber-500 mr-1.5"></i>${doc.jadwal}</div>
+                                </div>
+
+                                <button onclick="state.bookingDetails.dokter='${doc.name}'; requireAuthAndNavigate('bookingForm');" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow">
+                                    Pilih Dokter Ini
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- FORM PEMESANAN RESERVASI ---
+        function renderStageBookingForm() {
+            const activeItems = state.cart.length > 0 ? state.cart : [{ ...state.selectedTreatment, qty: 1 }];
+            const subtotal = activeItems.reduce((acc, item) => acc + (item.price * item.qty), 0);
             const discountAmount = subtotal * (state.bookingDetails.discount < 1 ? state.bookingDetails.discount : 0);
             const total = subtotal - discountAmount;
 
             return `
-                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Keranjang Perawatan</h1>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                    <div class="mb-8">
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Form Pemesanan & Reservasi</h1>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">Lengkapi data dengan benar untuk memproses pemesanan treatment-mu.</p>
+                    </div>
 
-                    ${state.cart.length === 0 ? `
-                        <div class="bg-white dark:bg-slate-800 rounded-3xl p-10 text-center border border-slate-200 dark:border-slate-700">
-                            <div class="w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center text-slate-400 text-2xl mx-auto mb-3">
-                                <i class="fas fa-shopping-bag"></i>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-6">
+                            
+                            <!-- Box 1: Treatment -->
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fas fa-box text-brand-600"></i>
+                                    <span>Treatment yang Dipesan</span>
+                                </h3>
+                                <div class="space-y-3">
+                                    ${activeItems.map(item => `
+                                        <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-14 h-14 rounded-xl object-cover" alt="${item.name}">
+                                                <div>
+                                                    <h4 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${item.name}</h4>
+                                                    <span class="text-[11px] text-slate-500">Jumlah: ${item.qty}x (${item.duration || '60 Menit'})</span>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs sm:text-sm font-extrabold text-brand-600">${formatRupiah(item.price * item.qty)}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
                             </div>
-                            <h3 class="text-base font-bold text-slate-800 dark:text-white">Keranjang Masih Kosong</h3>
-                            <p class="text-xs text-slate-400 mt-1 mb-5">Pilih treatment kulit impian Anda di katalog.</p>
-                            <button onclick="navigateTo('katalog')" class="px-5 py-2.5 bg-brand-600 text-white font-bold rounded-xl text-xs shadow">
-                                Katalog Treatment
-                            </button>
-                        </div>
-                    ` : `
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="lg:col-span-2 space-y-3">
-                                ${state.cart.map(item => `
-                                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="${item.image}" onerror="this.src='${IMAGES.fallback}'" class="w-16 h-16 rounded-xl object-cover" alt="${item.name}">
-                                            <div>
-                                                <h4 class="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">${item.name}</h4>
-                                                <span class="text-xs text-brand-600 font-bold block mt-0.5">${formatRupiah(item.price)}</span>
-                                            </div>
-                                        </div>
 
-                                        <div class="flex items-center space-x-2">
-                                            <div class="flex items-center space-x-1.5 bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
-                                                <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 bg-white dark:bg-slate-800 rounded text-xs font-bold">-</button>
-                                                <span class="text-xs font-bold px-1.5">${item.qty}</span>
-                                                <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 bg-white dark:bg-slate-800 rounded text-xs font-bold">+</button>
-                                            </div>
-                                            <button onclick="updateCartQty(${item.id}, -${item.qty})" class="text-rose-500 text-xs p-1.5">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
+                            <!-- Box 2: Data Pembeli / Pasien -->
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fas fa-user text-brand-600"></i>
+                                    <span>Data Identitas Pasien</span>
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Depan *</label>
+                                        <input type="text" id="inpNamaDepan" value="${state.bookingDetails.namaDepan}" placeholder="Nama Depan" oninput="state.bookingDetails.namaDepan = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
                                     </div>
-                                `).join('')}
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Belakang</label>
+                                        <input type="text" id="inpNamaBelakang" value="${state.bookingDetails.namaBelakang}" placeholder="Nama Belakang" oninput="state.bookingDetails.namaBelakang = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Email *</label>
+                                        <input type="email" id="inpEmail" value="${state.bookingDetails.email}" placeholder="pasien@gmail.com" oninput="state.bookingDetails.email = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">No. WhatsApp *</label>
+                                        <input type="tel" id="inpPhone" value="${state.bookingDetails.phone}" placeholder="08123456789" oninput="state.bookingDetails.phone = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-200 dark:border-slate-700 h-fit space-y-5">
-                                <h3 class="font-bold text-slate-900 dark:text-white text-sm">Ringkasan Pesanan</h3>
-                                
+                            <!-- Box 3: Cabang & Jadwal -->
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fas fa-calendar-alt text-brand-600"></i>
+                                    <span>Pilih Cabang & Jadwal Kunjungan</span>
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Cabang ZIP Clinic *</label>
+                                        <select onchange="state.bookingDetails.cabang = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                            ${['ZIP Clinic - Deli Park Medan', 'ZIP Clinic Sun Plaza Medan', 'ZIP Clinic Pattimura Medan', 'ZIP Clinic Jakarta - Kebayoran Baru'].map(c => `
+                                                <option value="${c}" ${state.bookingDetails.cabang === c ? 'selected' : ''}>${c}</option>
+                                            `).join('')}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Dokter / Beautician *</label>
+                                        <select onchange="state.bookingDetails.dokter = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                            ${DOCTORS_DATA.map(d => `
+                                                <option value="${d.name}" ${state.bookingDetails.dokter === d.name ? 'selected' : ''}>${d.name}</option>
+                                            `).join('')}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Tanggal *</label>
+                                        <input type="date" value="${state.bookingDetails.tanggal}" onchange="state.bookingDetails.tanggal = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Jam *</label>
+                                        <select onchange="state.bookingDetails.jam = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                                            <option value="10:00" ${state.bookingDetails.jam === '10:00' ? 'selected' : ''}>10:00 WIB</option>
+                                            <option value="13:00" ${state.bookingDetails.jam === '13:00' ? 'selected' : ''}>13:00 WIB</option>
+                                            <option value="16:00" ${state.bookingDetails.jam === '16:00' ? 'selected' : ''}>16:00 WIB</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Box 4: Pembayaran -->
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fas fa-credit-card text-brand-600"></i>
+                                    <span>Metode Pembayaran</span>
+                                </h3>
+                                <div class="space-y-2">
+                                    ${['QRIS Instan', 'BCA Virtual Account', 'Mandiri Virtual Account', 'GoPay / OVO / Dana'].map(m => `
+                                        <label class="flex items-center space-x-3 p-3.5 border rounded-2xl cursor-pointer text-xs font-bold ${state.bookingDetails.metodePembayaran === m ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10 text-brand-700 dark:text-brand-300' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'}">
+                                            <input type="radio" name="metodeBayar" value="${m}" ${state.bookingDetails.metodePembayaran === m ? 'checked' : ''} onchange="state.bookingDetails.metodePembayaran = this.value" class="text-brand-600">
+                                            <span>${m}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Sticky Right Box: Summary -->
+                        <div class="space-y-6">
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl h-fit space-y-5 sticky top-24">
+                                <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">Ringkasan Pesanan</h3>
+
                                 <div class="space-y-2.5 text-xs">
                                     <div class="flex justify-between text-slate-500">
-                                        <span>Subtotal</span>
+                                        <span>Subtotal Treatment</span>
                                         <span class="font-bold text-slate-800 dark:text-slate-200">${formatRupiah(subtotal)}</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-500">
+                                        <span>Konsultasi Medis</span>
+                                        <span class="font-bold text-emerald-600">GRATIS</span>
                                     </div>
                                     ${discountAmount > 0 ? `
                                         <div class="flex justify-between text-emerald-600 font-semibold">
@@ -937,266 +1202,87 @@
                                             <span>-${formatRupiah(discountAmount)}</span>
                                         </div>
                                     ` : ''}
-                                    <div class="pt-2.5 border-t border-slate-100 dark:border-slate-700 flex justify-between text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                                        <span>Total</span>
-                                        <span class="text-brand-600">${formatRupiah(total)}</span>
+                                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between text-sm font-black text-slate-900 dark:text-white">
+                                        <span>Total Bayar</span>
+                                        <span class="text-brand-600 text-base">${formatRupiah(total)}</span>
                                     </div>
                                 </div>
 
-                                <div class="space-y-1.5">
-                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-400">Kode Voucher</label>
+                                <div class="space-y-1.5 pt-2">
+                                    <label class="text-[11px] font-bold text-slate-600 dark:text-slate-400">Kode Voucher Promo</label>
                                     <div class="flex space-x-2">
-                                        <input type="text" id="voucherInput" placeholder="ZIPNEW10" class="flex-grow px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase font-mono">
-                                        <button onclick="applyVoucher()" class="px-3.5 py-2 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl text-xs">Pakai</button>
+                                        <input type="text" id="voucherInput" placeholder="ZIPNEW10" class="flex-grow px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs uppercase font-mono dark:text-white">
+                                        <button onclick="applyVoucher()" class="px-4 py-2 bg-slate-900 dark:bg-slate-700 text-white font-bold rounded-xl text-xs">Pakai</button>
                                     </div>
                                 </div>
 
-                                <button onclick="requireAuthAndNavigate('bookingForm')" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow text-xs transition-all">
-                                    Lanjut Booking
+                                <button onclick="finishBooking()" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-extrabold rounded-xl shadow-lg shadow-brand-600/30 text-xs transition-all">
+                                    Konfirmasi & Dapatkan QR Tiket
                                 </button>
                             </div>
                         </div>
-                    `}
-                </div>
-            `;
-        }
 
-        function renderStageBookingForm() {
-            const steps = [
-                "Pilih Cabang", "Pilih Dokter", "Pilih Jadwal",
-                "Identitas Pasien", "Catatan Khusus", "Review",
-                "Pembayaran", "Syarat & Ketentuan", "Verifikasi", "Selesai"
-            ];
-
-            return `
-                <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6">
-                        <div>
-                            <div class="flex items-center justify-between text-[11px] sm:text-xs font-bold text-brand-600 mb-1.5">
-                                <span>LANGKAH ${state.bookingDetails.step} DARI 10</span>
-                                <span>${steps[state.bookingDetails.step - 1]}</span>
-                            </div>
-                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-brand-600 h-full transition-all duration-300" style="width: ${(state.bookingDetails.step / 10) * 100}%"></div>
-                            </div>
-                        </div>
-
-                        <div class="min-h-[200px]">
-                            ${renderStepContent(state.bookingDetails.step)}
-                        </div>
-
-                        <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-                            <button onclick="changeBookingStep(-1)" ${state.bookingDetails.step === 1 ? 'disabled class="opacity-40 cursor-not-allowed px-4 py-2 rounded-xl border text-xs font-bold"' : 'class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold"'}>
-                                Sebelumnya
-                            </button>
-
-                            ${state.bookingDetails.step === 10 ? `
-                                <button onclick="finishBooking()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow-md">
-                                    Bayar & Dapatkan QR Tiket
-                                </button>
-                            ` : `
-                                <button onclick="changeBookingStep(1)" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow">
-                                    Selanjutnya
-                                </button>
-                            `}
-                        </div>
                     </div>
                 </div>
             `;
         }
 
-        function renderStepContent(step) {
-            switch(step) {
-                case 1:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Cabang ZIP Clinic</h3>
-                            <div class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
-                                ${['ZIP Clinic - Deli Park Medan', 'ZIP Clinic Sun Plaza Medan', 'ZIP Clinic Pattimura Medan', 'ZIP Clinic Jakarta - Kebayoran Baru'].map(c => `
-                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.cabang === c ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
-                                        <input type="radio" name="cabang" value="${c}" ${state.bookingDetails.cabang === c ? 'checked' : ''} onchange="state.bookingDetails.cabang = this.value" class="text-brand-600">
-                                        <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${c}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                case 2:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Pilih Dokter Spesialis</h3>
-                            <div class="space-y-2">
-                                ${['dr. Anita Rahma, Sp.D.V.E', 'dr. Budi Santoso, Sp.D.V.E', 'dr. Clara Devina, Dip.AAAM'].map(d => `
-                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.dokter === d ? 'border-brand-600 bg-brand-50/40 dark:bg-brand-900/10' : 'border-slate-200 dark:border-slate-700'}">
-                                        <input type="radio" name="dokter" value="${d}" ${state.bookingDetails.dokter === d ? 'checked' : ''} onchange="state.bookingDetails.dokter = this.value" class="text-brand-600">
-                                        <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${d}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                case 3:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Jadwal Perawatan</h3>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 mb-1">Tanggal</label>
-                                <input type="date" value="${state.bookingDetails.tanggal}" onchange="state.bookingDetails.tanggal = this.value" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-slate-500 mb-1">Jam</label>
-                                <select onchange="state.bookingDetails.jam = this.value" class="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
-                                    <option value="10:00" ${state.bookingDetails.jam === '10:00' ? 'selected' : ''}>10:00 WIB</option>
-                                    <option value="13:00" ${state.bookingDetails.jam === '13:00' ? 'selected' : ''}>13:00 WIB</option>
-                                    <option value="16:00" ${state.bookingDetails.jam === '16:00' ? 'selected' : ''}>16:00 WIB</option>
-                                </select>
-                            </div>
-                        </div>
-                    `;
-                case 4:
-                    const curNama = state.bookingDetails.nama || (state.userProfile ? state.userProfile.name : '');
-                    const curPhone = state.bookingDetails.phone || (state.userProfile ? state.userProfile.phone : '');
-                    return `
-                        <div class="space-y-4">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Informasi Identitas Pasien</h3>
-                            <div class="space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Nama Lengkap Pasien *</label>
-                                    <input type="text" required placeholder="Nama lengkap" value="${curNama}" oninput="state.bookingDetails.nama = this.value" class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">No. WhatsApp Aktif *</label>
-                                    <input type="tel" required placeholder="08123456789" value="${curPhone}" oninput="state.bookingDetails.phone = this.value" class="w-full px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                case 5:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Catatan / Keluhan Kulit</h3>
-                            <textarea placeholder="Contoh: Kulit sensitif..." oninput="state.bookingDetails.catatan = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs dark:text-white h-24">${state.bookingDetails.catatan}</textarea>
-                        </div>
-                    `;
-                case 6:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Ringkasan Treatment</h3>
-                            <div class="p-3.5 bg-slate-50 dark:bg-slate-900 rounded-xl text-xs space-y-1.5 border border-slate-200 dark:border-slate-700">
-                                <p><strong>Treatment:</strong> ${state.selectedTreatment.name}</p>
-                                <p><strong>Biaya:</strong> ${formatRupiah(state.selectedTreatment.price)}</p>
-                            </div>
-                        </div>
-                    `;
-                case 7:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Metode Pembayaran</h3>
-                            <div class="space-y-2">
-                                ${['QRIS Instan', 'BCA Virtual Account', 'Mandiri VA'].map(m => `
-                                    <label class="flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:border-brand-500 ${state.bookingDetails.metodePembayaran === m ? 'border-brand-600 bg-brand-50/40' : 'border-slate-200 dark:border-slate-700'}">
-                                        <input type="radio" name="payMethod" value="${m}" ${state.bookingDetails.metodePembayaran === m ? 'checked' : ''} onchange="state.bookingDetails.metodePembayaran = this.value" class="text-brand-600">
-                                        <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${m}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                case 8:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Syarat & Ketentuan</h3>
-                            <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-xl text-[11px] text-slate-500 space-y-1.5 border border-slate-200 dark:border-slate-700">
-                                <p>1. Hadir 15 menit sebelum jadwal.</p>
-                                <p>2. Pembatalan H-1 tanpa denda.</p>
-                            </div>
-                        </div>
-                    `;
-                case 9:
-                    return `
-                        <div class="space-y-3">
-                            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Verifikasi Akhir</h3>
-                            <div class="p-3.5 bg-brand-50/50 dark:bg-brand-900/20 border border-brand-200 dark:border-brand-800 rounded-2xl text-xs space-y-1.5">
-                                <p><strong>Nama:</strong> ${state.bookingDetails.nama || '-'}</p>
-                                <p><strong>Cabang:</strong> ${state.bookingDetails.cabang}</p>
-                                <p><strong>Dokter:</strong> ${state.bookingDetails.dokter}</p>
-                                <p><strong>Jadwal:</strong> ${state.bookingDetails.tanggal} (${state.bookingDetails.jam})</p>
-                            </div>
-                        </div>
-                    `;
-                case 10:
-                    return `
-                        <div class="text-center space-y-3 py-2">
-                            <i class="fas fa-check-circle text-4xl text-emerald-500"></i>
-                            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">Siap Konfirmasi Pesanan</h3>
-                        </div>
-                    `;
-            }
-        }
-
-        function changeBookingStep(delta) {
-            if (state.bookingDetails.step === 4 && delta > 0) {
-                if (!state.bookingDetails.nama || state.bookingDetails.nama.trim() === '') {
-                    showToast("Harap isi Nama Lengkap Pasien.", "warning");
-                    return;
-                }
-            }
-            state.bookingDetails.step = Math.max(1, Math.min(10, state.bookingDetails.step + delta));
-            renderApp();
-        }
-
         function finishBooking() {
+            const namaDepan = document.getElementById('inpNamaDepan')?.value;
+            if (!namaDepan || namaDepan.trim() === '') {
+                showToast("Harap isi Nama Depan / Pasien terlebih dahulu.", "warning");
+                return;
+            }
+
+            const activeItems = state.cart.length > 0 ? state.cart : [{ ...state.selectedTreatment, qty: 1 }];
+            const total = activeItems.reduce((acc, item) => acc + (item.price * item.qty), 0);
+
             const newOrder = {
                 id: "ZIP-" + Math.floor(10000 + Math.random() * 90000),
                 tanggal: state.bookingDetails.tanggal,
                 jam: state.bookingDetails.jam,
                 cabang: state.bookingDetails.cabang,
                 dokter: state.bookingDetails.dokter,
-                treatments: state.cart.length > 0 ? state.cart.map(c => c.name) : [state.selectedTreatment.name],
-                total: state.cart.length > 0 ? state.cart.reduce((a, b) => a + (b.price * b.qty), 0) : state.selectedTreatment.price,
+                pasienNama: (namaDepan + " " + (document.getElementById('inpNamaBelakang')?.value || '')).trim(),
+                treatments: activeItems.map(c => c.name),
+                total: total,
                 status: "Berlangsung",
-                itemsCount: state.cart.length > 0 ? state.cart.reduce((a, b) => a + b.qty, 0) : 1
+                catatanDokter: ""
             };
             state.bookingHistory.unshift(newOrder);
             state.cart = [];
             updateCartBadge();
-            state.bookingDetails.step = 1;
             navigateTo('bookingSukses');
         }
 
         function renderStageBookingSukses() {
             const lastBooking = state.bookingHistory[0];
             return `
-                <div class="max-w-md mx-auto px-4 py-10 text-center">
+                <div class="max-w-md mx-auto px-4 py-16 text-center">
                     <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-5">
-                        <div class="w-14 h-14 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-2xl mx-auto">
+                        <div class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
                             <i class="fas fa-qrcode"></i>
                         </div>
                         <div>
-                            <span class="text-[10px] font-bold text-emerald-600 uppercase">Success</span>
-                            <h2 class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">Tiket Diterbitkan</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Kode: <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${lastBooking.id}</span></p>
+                            <span class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full">Reservasi Berhasil</span>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-2">Tiket Perawatan Diterbitkan</h2>
+                            <p class="text-xs text-slate-500 mt-1">Kode Booking: <span class="font-mono font-bold text-slate-800 dark:text-slate-200">${lastBooking.id}</span></p>
                         </div>
                         <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${lastBooking.id}" alt="QR" class="w-32 h-32 rounded">
-                            <span class="text-[10px] text-slate-400 mt-2">Tunjukkan QR ini ke resepsionis klinik</span>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${lastBooking.id}" alt="QR" class="w-36 h-36 rounded shadow">
+                            <span class="text-[11px] text-slate-400 mt-2 font-medium">Tunjukkan QR ini ke resepsionis klinik saat kedatangan</span>
                         </div>
-                        <button onclick="navigateTo('riwayat')" class="w-full py-3 bg-brand-600 text-white font-bold rounded-xl text-xs shadow">
-                            Lihat Riwayat Janji Temu
+                        <button onclick="navigateTo('riwayat')" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs shadow-md transition-all">
+                            Lihat Riwayat & Status Reservasi
                         </button>
                     </div>
                 </div>
             `;
         }
 
+        // --- RIWAYAT RESERVASI PASIEN ---
         function renderStageRiwayat() {
-            const tabs = [
-                { id: 'semua', label: 'Semua' },
-                { id: 'berlangsung', label: 'Berlangsung' },
-                { id: 'selesai', label: 'Selesai' }
-            ];
-
-            const filteredHistory = state.bookingHistory.filter(item => {
+            const filtered = state.bookingHistory.filter(item => {
                 if (state.historyTab === 'semua') return true;
                 return item.status.toLowerCase() === state.historyTab.toLowerCase();
             });
@@ -1204,39 +1290,38 @@
             return `
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                     <div class="mb-6">
-                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Riwayat Pesanan</h1>
-                        <p class="text-xs text-slate-500 mt-0.5">Pantau status reservasi dan tiket perawatan Anda.</p>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Riwayat & Status Reservasi</h1>
+                        <p class="text-xs text-slate-500 mt-0.5">Pantau status reservasi aktif dan riwayat perawatan medis Anda.</p>
                     </div>
 
-                    <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto custom-scrollbar">
-                        ${tabs.map(tab => {
-                            const isActive = state.historyTab === tab.id;
-                            return `
-                                <button onclick="state.historyTab = '${tab.id}'; renderApp();" class="py-2.5 px-3 font-bold text-xs whitespace-nowrap transition-all border-b-2 ${isActive ? 'border-brand-600 text-brand-600 dark:text-brand-400' : 'border-transparent text-slate-500'}">
-                                    <span>${tab.label}</span>
-                                </button>
-                            `;
-                        }).join('')}
+                    <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 mb-6">
+                        ${['semua', 'berlangsung', 'selesai', 'dibatalkan'].map(tab => `
+                            <button onclick="state.historyTab = '${tab}'; renderApp();" class="py-2.5 px-4 font-bold text-xs uppercase transition-all border-b-2 ${state.historyTab === tab ? 'border-brand-600 text-brand-600 dark:text-brand-400' : 'border-transparent text-slate-500'}">
+                                ${tab}
+                            </button>
+                        `).join('')}
                     </div>
 
                     <div class="space-y-4">
-                        ${filteredHistory.length > 0 ? filteredHistory.map(item => `
-                            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-4 sm:p-5 space-y-3">
-                                <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-100 dark:border-slate-700 text-[11px]">
-                                    <span class="font-mono font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">${item.id}</span>
+                        ${filtered.length > 0 ? filtered.map(item => `
+                            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 space-y-3">
+                                <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-700 text-[11px]">
+                                    <span class="font-mono font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded">${item.id}</span>
                                     <span class="text-slate-500"><i class="far fa-calendar-alt mr-1 text-brand-600"></i>${item.tanggal} (${item.jam})</span>
                                 </div>
                                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                                     <div>
-                                        <div class="text-[11px] text-brand-600 font-bold">${item.cabang}</div>
+                                        <span class="text-[11px] text-brand-600 font-bold block">${item.cabang}</span>
                                         <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-0.5">${item.treatments.join(' + ')}</h3>
-                                        <p class="text-[11px] text-slate-500 mt-0.5"><i class="fas fa-user-md mr-1"></i>${item.dokter}</p>
+                                        <p class="text-xs text-slate-500 mt-0.5"><i class="fas fa-user-md mr-1 text-brand-500"></i>${item.dokter}</p>
+                                        ${item.catatanDokter ? `<p class="text-xs text-emerald-600 font-semibold bg-emerald-50 dark:bg-emerald-950/30 p-2 rounded-lg mt-2"><i class="fas fa-clipboard-check mr-1"></i>Catatan Dokter: ${item.catatanDokter}</p>` : ''}
                                     </div>
                                     <div class="w-full sm:w-auto flex sm:flex-col justify-between items-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                                         <span class="text-sm font-black text-brand-600">${formatRupiah(item.total)}</span>
+                                        <span class="px-2.5 py-1 ${item.status === 'Selesai' ? 'bg-emerald-100 text-emerald-700' : item.status === 'Dibatalkan' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-800'} font-bold text-[10px] rounded-lg">${item.status}</span>
                                         ${item.status === 'Berlangsung' ? `
-                                            <button onclick="navigateTo('bookingSukses')" class="px-3 py-1.5 bg-brand-600 text-white rounded-lg text-xs font-bold shadow">
-                                                QR Tiket
+                                            <button onclick="batalkanReservasi('${item.id}')" class="px-3 py-1 bg-rose-500 hover:bg-rose-600 text-white text-[11px] font-bold rounded-lg transition-colors mt-1">
+                                                Batalkan Reservasi
                                             </button>
                                         ` : ''}
                                     </div>
@@ -1244,9 +1329,271 @@
                             </div>
                         `).join('') : `
                             <div class="bg-white dark:bg-slate-800 rounded-2xl p-10 text-center border border-dashed border-slate-300">
-                                <p class="text-xs text-slate-400">Tidak ada riwayat untuk tab ini.</p>
+                                <p class="text-xs text-slate-400">Tidak ada riwayat reservasi pada tab ini.</p>
                             </div>
                         `}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- PENGATURAN PROFIL PASIEN ---
+        function renderStageProfilPasien() {
+            return `
+                <div class="max-w-xl mx-auto px-4 py-10">
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 dark:border-slate-700 space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-20 h-20 bg-brand-600 text-white rounded-2xl font-black text-2xl flex items-center justify-center shadow-lg overflow-hidden relative group">
+                                ${state.userProfile.photo ? `<img src="${state.userProfile.photo}" class="w-full h-full object-cover">` : state.userProfile.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900 dark:text-white">${state.userProfile.name}</h2>
+                                <p class="text-xs text-slate-500">${state.userProfile.email}</p>
+                                <span class="text-[10px] font-bold uppercase bg-brand-500/10 text-brand-600 px-2 py-0.5 rounded mt-1 inline-block">Pasien Terverifikasi</span>
+                            </div>
+                        </div>
+
+                        <form onsubmit="event.preventDefault(); showToast('Profil berhasil diperbarui!', 'success');" class="space-y-4 text-xs">
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Lengkap</label>
+                                <input type="text" value="${state.userProfile.name}" oninput="state.userProfile.name = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Nomor Telepon / WhatsApp</label>
+                                <input type="tel" value="${state.userProfile.phone}" oninput="state.userProfile.phone = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">URL Foto Profil</label>
+                                <input type="text" placeholder="https://..." value="${state.userProfile.photo}" oninput="state.userProfile.photo = this.value" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Ubah Kata Sandi</label>
+                                <input type="password" placeholder="••••••••" class="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl dark:text-white">
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md">
+                                Simpan Perubahan Profil
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AREA ADMIN KLINIK ---
+        function renderStageAdminDashboard() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <div>
+                        <h1 class="text-2xl font-black text-slate-900 dark:text-white">Dashboard Statistik Admin</h1>
+                        <p class="text-xs text-slate-500">Ringkasan operasional Klinik ZIP hari ini.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow">
+                            <span class="text-xs text-slate-400 font-bold">Total Pasien Terdaftar</span>
+                            <h3 class="text-2xl font-extrabold text-brand-600 mt-1">${REGISTERED_USERS.length}</h3>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow">
+                            <span class="text-xs text-slate-400 font-bold">Total Reservasi</span>
+                            <h3 class="text-2xl font-extrabold text-teal-600 mt-1">${state.bookingHistory.length}</h3>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow">
+                            <span class="text-xs text-slate-400 font-bold">Reservasi Hari Ini</span>
+                            <h3 class="text-2xl font-extrabold text-amber-500 mt-1">12</h3>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow">
+                            <span class="text-xs text-slate-400 font-bold">Treatment Terpopuler</span>
+                            <h3 class="text-sm font-extrabold text-indigo-600 mt-1">Cryo Fat Freezing</h3>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStageAdminTreatment() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-2xl font-black text-slate-900 dark:text-white">Kelola Data Treatment (CRUD)</h1>
+                        <button onclick="tambahTreatmentBaru()" class="px-4 py-2 bg-brand-600 text-white rounded-xl font-bold text-xs shadow">
+                            + Tambah Treatment Baru
+                        </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                        ${TREATMENTS_DATA.map(t => `
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl gap-3 text-xs">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${t.name}</h4>
+                                    <span class="text-brand-600 font-semibold">${t.category} | ${t.duration}</span>
+                                    <p class="text-slate-500 mt-0.5">${formatRupiah(t.price)}</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button onclick="editTreatment(${t.id})" class="px-3 py-1.5 bg-amber-500 text-white font-bold rounded-lg">Edit</button>
+                                    <button onclick="hapusTreatment(${t.id})" class="px-3 py-1.5 bg-rose-500 text-white font-bold rounded-lg">Hapus</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function tambahTreatmentBaru() {
+            const nama = prompt("Nama Treatment:");
+            if (nama) {
+                const p = parseInt(prompt("Harga (Rp):") || "500000");
+                TREATMENTS_DATA.push({
+                    id: Date.now(),
+                    name: nama,
+                    category: "Facial & Laser",
+                    price: p,
+                    originalPrice: p + 100000,
+                    rating: 5.0,
+                    reviews: 1,
+                    duration: "45 Menit",
+                    image: IMAGES.treatments.iplRejuv,
+                    badge: "NEW",
+                    description: "Perawatan baru Klinik ZIP.",
+                    benefits: ["Perawatan berkualitas", "Medis terpercaya"]
+                });
+                showToast("Treatment berhasil ditambahkan!", "success");
+                renderApp();
+            }
+        }
+
+        function hapusTreatment(id) {
+            TREATMENTS_DATA = TREATMENTS_DATA.filter(t => t.id !== id);
+            showToast("Treatment dihapus.", "info");
+            renderApp();
+        }
+
+        function editTreatment(id) {
+            const t = TREATMENTS_DATA.find(x => x.id === id);
+            if (t) {
+                const nameBaru = prompt("Ubah Nama Treatment:", t.name);
+                if (nameBaru) {
+                    t.name = nameBaru;
+                    showToast("Treatment diperbarui!", "success");
+                    renderApp();
+                }
+            }
+        }
+
+        function renderStageAdminDokter() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-2xl font-black text-slate-900 dark:text-white">Kelola Data Dokter & Beautician (CRUD)</h1>
+                        <button onclick="tambahDokterBaru()" class="px-4 py-2 bg-brand-600 text-white rounded-xl font-bold text-xs shadow">
+                            + Tambah Dokter Baru
+                        </button>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                        ${DOCTORS_DATA.map(d => `
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl gap-3 text-xs">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${d.name}</h4>
+                                    <p class="text-brand-600 font-semibold">${d.spec} - ${d.cabang}</p>
+                                    <span class="text-slate-400 text-[11px]">${d.jadwal}</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button onclick="hapusDokter(${d.id})" class="px-3 py-1.5 bg-rose-500 text-white font-bold rounded-lg">Hapus</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function tambahDokterBaru() {
+            const nama = prompt("Nama Dokter / Beautician:");
+            if (nama) {
+                DOCTORS_DATA.push({
+                    id: Date.now(),
+                    name: nama,
+                    spec: "Spesialis Dermatology",
+                    exp: "5 Tahun",
+                    avatar: "https://images.unsplash.com/photo-1594824813566-78a9c37ed524?auto=format&fit=crop&w=400&q=80",
+                    cabang: "ZIP Clinic - Deli Park Medan",
+                    jadwal: "Senin - Sabtu (10.00 - 18.00 WIB)"
+                });
+                showToast("Dokter baru ditambahkan!", "success");
+                renderApp();
+            }
+        }
+
+        function hapusDokter(id) {
+            DOCTORS_DATA = DOCTORS_DATA.filter(d => d.id !== id);
+            showToast("Dokter dihapus.", "info");
+            renderApp();
+        }
+
+        function renderStageAdminReservasi() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <h1 class="text-2xl font-black text-slate-900 dark:text-white">Kelola Data Reservasi Pasien</h1>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                        ${state.bookingHistory.map(b => `
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+                                <div>
+                                    <span class="font-mono font-bold text-slate-900 dark:text-white bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded">${b.id}</span>
+                                    <span class="font-bold ml-2 text-slate-800 dark:text-slate-200">Pasien: ${b.pasienNama}</span>
+                                    <p class="text-slate-500 mt-1">${b.treatments.join(', ')} | Dokter: ${b.dokter} | ${b.tanggal}</p>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="updateStatusReservasi('${b.id}', 'Selesai')" class="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-lg">Konfirmasi Selesai</button>
+                                    <button onclick="batalkanReservasi('${b.id}')" class="px-3 py-1.5 bg-rose-500 text-white font-bold rounded-lg">Batalkan</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AREA DOKTER ---
+        function renderStageDokterJadwal() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <h1 class="text-2xl font-black text-slate-900 dark:text-white">Jadwal Praktik Pelayanan Saya</h1>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-4 text-xs">
+                        <div class="p-4 bg-brand-50/50 dark:bg-brand-900/20 border border-brand-200 rounded-2xl">
+                            <h3 class="font-bold text-base text-brand-700 dark:text-brand-300">dr. Anita Rahma, Sp.D.V.E</h3>
+                            <p class="text-slate-600 dark:text-slate-300 mt-1">Lokasi: ZIP Clinic - Deli Park Medan</p>
+                            <p class="text-slate-600 dark:text-slate-300">Jam Operasional Pelayanan: Senin - Jumat (10:00 - 17:00 WIB)</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStageDokterReservasi() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+                    <h1 class="text-2xl font-black text-slate-900 dark:text-white">Daftar Pasien & Catatan Konsultasi</h1>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+                        ${state.bookingHistory.map(b => `
+                            <div class="p-5 bg-slate-50 dark:bg-slate-900 rounded-2xl space-y-3 text-xs border border-slate-200 dark:border-slate-700">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-sm text-slate-900 dark:text-white">Pasien: ${b.pasienNama} (${b.id})</span>
+                                    <span class="px-2.5 py-1 bg-brand-500/10 text-brand-600 font-bold rounded">${b.status}</span>
+                                </div>
+                                <p class="text-slate-500"><strong>Treatment:</strong> ${b.treatments.join(', ')} | <strong>Jadwal:</strong> ${b.tanggal} (${b.jam})</p>
+                                
+                                <div class="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+                                    <label class="font-bold text-slate-700 dark:text-slate-300">Catatan Medis Hasil Konsultasi Dokter:</label>
+                                    <textarea id="catatanDokter_${b.id}" class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs dark:text-white" placeholder="Tuliskan catatan kondisi kulit pasien...">${b.catatanDokter || ''}</textarea>
+                                    <div class="flex space-x-2">
+                                        <button onclick="simpanCatatanDokter('${b.id}')" class="px-4 py-2 bg-brand-600 text-white font-bold rounded-xl shadow">Simpan Catatan</button>
+                                        <button onclick="updateStatusReservasi('${b.id}', 'Selesai')" class="px-4 py-2 bg-emerald-600 text-white font-bold rounded-xl shadow">Tandai Selesai</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
